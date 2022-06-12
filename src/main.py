@@ -1,4 +1,5 @@
 from tkinter import *
+import csv
 
 root = Tk()
 root.state('zoomed')
@@ -6,10 +7,13 @@ root.title('grapy')
 
 points = []
 
-# func
+# func -------------------------------------------------------------------------------------------------------------
 def exportPoints():
-    print(points)
     tempLabel.config(text='Exporting...')
+    with open('points.csv', 'w', newline='', encoding='utf-8') as csvfile:
+        csvwriter = csv.writer(csvfile) 
+        csvwriter.writerows([['x','y']])
+        csvwriter.writerows(points)
 
 def plotPoint(event):
     x, y = event.x-2, 1002-event.y
@@ -17,11 +21,11 @@ def plotPoint(event):
         return
 
     graph.create_oval(event.x-3, event.y-3, event.x+3, event.y+3, width = 0, fill = 'blue')
-    points.append({x, y})
+    points.append([x, y])
     tempLabel.config(text=f'Plot at {x}, {y}')
-    
 
-# if __name__ == '__main__':
+
+# if __name__ == '__main__': ----------------------------------------------------------------------------------------
     # topBarFrame = Frame(root, bd=5)
     # topBarFrame.grid(row=0, column=0)
 
