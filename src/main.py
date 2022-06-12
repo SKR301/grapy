@@ -8,15 +8,14 @@ points = []
 
 # func
 def exportPoints():
+    print(points)
     tempLabel.config(text='Exporting...')
 
 def plotPoint(event):
-    #TODO: check plot boundary limit
-    x, y = event.x-5, 1000-event.y
-
-    if x < 0 or y < 0 or x > 1493 or y > 995:
+    x, y = event.x-2, 1002-event.y
+    if x<0 or x>1500 or y<0 or y>1000:
         return
-    
+
     graph.create_oval(event.x-3, event.y-3, event.x+3, event.y+3, width = 0, fill = 'blue')
     points.append({x, y})
     tempLabel.config(text=f'Plot at {x}, {y}')
