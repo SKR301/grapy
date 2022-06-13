@@ -1,4 +1,5 @@
 from tkinter import *
+from random import *
 import csv
 
 root = Tk()
@@ -18,7 +19,7 @@ def exportPoints():
         csvwriter.writerows([['x','y']])
         csvwriter.writerows(points)
 
-def plotPoint(event):
+def plotManualPoint(event):
     x, y = event.x-2, 1002-event.y
     if x<0 or x>1500 or y<0 or y>1000:
         return
@@ -27,7 +28,7 @@ def plotPoint(event):
     points.append([x, y])
     tempLabel.config(text=f'Plot at {x}, {y}')
 
-def undoPlotPoint(event):
+def undoPlotManualPoint(event):
     if len(points) < 1:
         return
 
@@ -39,16 +40,22 @@ def hideLinRegOpt():
     linRegSlopeScale.grid_remove()
     linRegConstantScale.grid_remove()
     linRegSpreadScale.grid_remove()
+    linRegPointPlt.grid_remove()
     linRegBtn.config(command=showLinRegOpt)
 
 def showLinRegOpt():
     linRegSlopeScale.grid(row=0, column=0)
     linRegConstantScale.grid(row=1, column=0)
     linRegSpreadScale.grid(row=2, column=0)
+    linRegPointPlt.grid(row=3, column=0)
     linRegBtn.config(command=hideLinRegOpt)
 
-def plotLinearRegPoints(event):
+def plotLinearRegPoints():
     tempLabel.config(text=f'{linRegSlope.get()}, {linRegConstant.get()}, {linRegSpread.get()}')
+    for a in range(1000):
+        x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
+        y = linRegSlope.get() * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
+        graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'white')
 
 def showLogRegOpt():
     print('show logistic regression')
@@ -62,8 +69,8 @@ graphFrame = Frame(root, bd=5)
 graphFrame.grid(row=1, column=0)
 
 graph = Canvas(graphFrame, bg='white', height=1000, width=1500)
-graph.bind('<Button-1>', plotPoint)
-graph.bind_all('<Control-z>', undoPlotPoint)
+graph.bind('<Button-1>', plotManualPoint)
+graph.bind_all('<Control-z>', undoPlotManualPoint)
 graph.grid(row=0, column=0)
 
 
@@ -77,10 +84,10 @@ linRegBtn.grid(row=0, column=0)
 linRegFrame = Frame(menuBarFrame, bd=5)
 linRegFrame.grid(row=1, column=0)
 
-linRegSlopeScale = Scale(linRegFrame, from_=0, to=90, orient=HORIZONTAL, length=300, variable=linRegSlope, command=plotLinearRegPoints)
-linRegConstantScale = Scale(linRegFrame, from_=-1500, to=1500, orient=HORIZONTAL, length=300, variable=linRegConstant, command=plotLinearRegPoints)
-linRegSpreadScale = Scale(linRegFrame, from_=0, to=100, orient=HORIZONTAL, length=300, variable=linRegSpread, command=plotLinearRegPoints)
-
+linRegSlopeScale = Scale(linRegFrame, from_=0, to=90, orient=HORIZONTAL, length=300, variable=linRegSlope)
+linRegConstantScale = Scale(linRegFrame, from_=-1500, to=1500, orient=HORIZONTAL, length=300, variable=linRegConstant)
+linRegSpreadScale = Scale(linRegFrame, from_=0, to=100, orient=HORIZONTAL, length=300, variable=linRegSpread)
+linRegPointPlt = Button(linRegFrame, text='Plot', command=plotLinearRegPoints)
 
 # logRegnBtn = Button(menuBarFrame, text='Logistic Reg', command=showLogRegOpt)
 # logRegnBtn.grid(row=1, column=0)
