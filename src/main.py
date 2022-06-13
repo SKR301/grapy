@@ -7,6 +7,7 @@ root.state('zoomed')
 root.title('grapy')
 
 points = []
+DEG_TO_RAD = 0.01745329
 linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
 linRegSpread = DoubleVar()
@@ -54,8 +55,9 @@ def plotLinearRegPoints():
     tempLabel.config(text=f'{linRegSlope.get()}, {linRegConstant.get()}, {linRegSpread.get()}')
     for a in range(1000):
         x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
-        y = linRegSlope.get() * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
-        graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'white')
+        y = linRegSlope.get() * DEG_TO_RAD * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
+        print(x,y)
+        graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'blue')
 
 def showLogRegOpt():
     print('show logistic regression')
