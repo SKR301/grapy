@@ -7,6 +7,7 @@ root.state('zoomed')
 root.title('grapy')
 
 points = []
+currPoint = []
 DEG_TO_RAD = 0.01745329
 linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
@@ -51,13 +52,25 @@ def showLinRegOpt():
     linRegPointPlt.grid(row=3, column=0)
     linRegBtn.config(command=hideLinRegOpt)
 
+def clearCurr():
+    for x,y in currPoint:
+        graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'white')
+    
+    currPoint.clear()
+
 def plotLinearRegPoints():
-    tempLabel.config(text=f'{linRegSlope.get()}, {linRegConstant.get()}, {linRegSpread.get()}')
+    clearCurr()
+    
+    tempLabel.config(text=f'Plotting {linRegSlope.get()}x + {linRegConstant.get()} : [{linRegSpread.get()}]')
     for a in range(0, 1500, 15):
         x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
         y = linRegSlope.get() * DEG_TO_RAD * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
         x, y = x-2, 1002-y
         graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'blue')
+        currPoint.append([x,y])
+
+def saveLinearRegPoints():
+    points.append(currPoint)
 
 def showLogRegOpt():
     print('show logistic regression')
@@ -90,6 +103,7 @@ linRegSlopeScale = Scale(linRegFrame, from_=0, to=90, orient=HORIZONTAL, length=
 linRegConstantScale = Scale(linRegFrame, from_=-1500, to=1500, orient=HORIZONTAL, length=300, variable=linRegConstant)
 linRegSpreadScale = Scale(linRegFrame, from_=0, to=200, orient=HORIZONTAL, length=300, variable=linRegSpread)
 linRegPointPlt = Button(linRegFrame, text='Plot', command=plotLinearRegPoints)
+linRegPointSave = Button(linRegFrame, text='Save', command=saveLinearRegPoints)
 
 # logRegnBtn = Button(menuBarFrame, text='Logistic Reg', command=showLogRegOpt)
 # logRegnBtn.grid(row=1, column=0)
