@@ -53,10 +53,10 @@ def showLinRegOpt():
 
 def plotLinearRegPoints():
     tempLabel.config(text=f'{linRegSlope.get()}, {linRegConstant.get()}, {linRegSpread.get()}')
-    for a in range(1000):
+    for a in range(0, 1500, 15):
         x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
         y = linRegSlope.get() * DEG_TO_RAD * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
-        print(x,y)
+        x, y = x-2, 1002-y
         graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'blue')
 
 def showLogRegOpt():
@@ -88,7 +88,7 @@ linRegFrame.grid(row=1, column=0)
 
 linRegSlopeScale = Scale(linRegFrame, from_=0, to=90, orient=HORIZONTAL, length=300, variable=linRegSlope)
 linRegConstantScale = Scale(linRegFrame, from_=-1500, to=1500, orient=HORIZONTAL, length=300, variable=linRegConstant)
-linRegSpreadScale = Scale(linRegFrame, from_=0, to=100, orient=HORIZONTAL, length=300, variable=linRegSpread)
+linRegSpreadScale = Scale(linRegFrame, from_=0, to=200, orient=HORIZONTAL, length=300, variable=linRegSpread)
 linRegPointPlt = Button(linRegFrame, text='Plot', command=plotLinearRegPoints)
 
 # logRegnBtn = Button(menuBarFrame, text='Logistic Reg', command=showLogRegOpt)
