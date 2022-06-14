@@ -56,7 +56,8 @@ def showLinRegOpt():
 
 def clearCurr():
     for x,y in currPoint:
-        graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'white')
+        plotX, plotY = x - 2, -1 * (y-1002)
+        graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'white')
     
     currPoint.clear()
 
