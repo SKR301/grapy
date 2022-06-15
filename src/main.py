@@ -1,6 +1,7 @@
 from tkinter import *
 from random import *
 import csv
+import math
 
 root = Tk()
 root.state('zoomed')
@@ -63,11 +64,14 @@ def clearCurr():
 
 def plotLinearRegPoints():
     clearCurr()
+    print(math.tan(linRegSlope.get()))
     
     tempLabel.config(text=f'Plotting {linRegSlope.get()}x + {linRegConstant.get()} : [{linRegSpread.get()}]')
     for a in range(0, 1500, 15):
         x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
-        y = linRegSlope.get() * DEG_TO_RAD * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
+        # x = a + linRegSpread.get()
+        y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
+        # y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get()
         plotX, plotY = x-2, 1002-y
         graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
         currPoint.append([x,y])
@@ -103,7 +107,7 @@ linRegBtn.grid(row=0, column=0)
 linRegFrame = Frame(menuBarFrame, bd=5)
 linRegFrame.grid(row=1, column=0)
 
-linRegSlopeScale = Scale(linRegFrame, from_=0, to=90, orient=HORIZONTAL, length=300, variable=linRegSlope)
+linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=300, variable=linRegSlope)
 linRegConstantScale = Scale(linRegFrame, from_=-1500, to=1500, orient=HORIZONTAL, length=300, variable=linRegConstant)
 linRegSpreadScale = Scale(linRegFrame, from_=0, to=200, orient=HORIZONTAL, length=300, variable=linRegSpread)
 linRegPointPlt = Button(linRegFrame, text='Plot', command=plotLinearRegPoints)
