@@ -14,6 +14,8 @@ linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
 linRegSpread = DoubleVar()
 
+
+
 # func -------------------------------------------------------------------------------------------------------------
 def exportPoints():
     tempLabel.config(text='Exporting...')
@@ -97,6 +99,7 @@ def saveLinearRegPoints():
 
 def showLogRegOpt():
     print('show logistic regression')
+
 
 
 # if __name__ == '__main__': ----------------------------------------------------------------------------------------
