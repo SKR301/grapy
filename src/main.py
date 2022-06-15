@@ -64,14 +64,11 @@ def clearCurr():
 
 def plotLinearRegPoints():
     clearCurr()
-    print(math.tan(linRegSlope.get()))
     
     tempLabel.config(text=f'Plotting {linRegSlope.get()}x + {linRegConstant.get()} : [{linRegSpread.get()}]')
     for a in range(0, 1500, 15):
         x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
-        # x = a + linRegSpread.get()
         y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
-        # y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get()
         plotX, plotY = x-2, 1002-y
         graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
         currPoint.append([x,y])
