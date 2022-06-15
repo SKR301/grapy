@@ -68,12 +68,21 @@ def plotLinearRegPoints():
     clearCurr()
     
     tempLabel.config(text=f'Plotting {linRegSlope.get()}x + {linRegConstant.get()} : [{linRegSpread.get()}]')
-    for a in range(0, 1500, 15):
-        x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
-        y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
-        plotX, plotY = x-2, 1002-y
-        graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
-        currPoint.append([x,y])
+
+    if linRegSlope.get() > 45 and linRegSlope.get() < 135:
+        for a in range(0, 1000, 10):
+            y = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
+            x = (y - linRegConstant.get()) / math.tan(linRegSlope.get() * DEG_TO_RAD)
+            plotX, plotY = x-2, 1002-y
+            graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
+            currPoint.append([x,y])
+    else: 
+        for a in range(0, 1500, 15):
+            x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
+            y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
+            plotX, plotY = x-2, 1002-y
+            graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
+            currPoint.append([x,y])
 
 def saveLinearRegPoints():
     global points
