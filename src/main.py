@@ -88,7 +88,7 @@ def plotLinearRegPoints():
             x = (y - linRegConstant.get())/(math.tan(linRegSlope.get() * DEG_TO_RAD)) + randomSpread(linRegSpread.get())
             plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
             plotPoint(plotX,plotY)
-            # points.append([plotX, plotY])
+            points.append([plotX, plotY])
     else: 
         for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
             x = a + randomSpread(linRegSpread.get())
