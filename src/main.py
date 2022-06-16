@@ -14,6 +14,8 @@ linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
 linRegSpread = DoubleVar()
 
+
+
 # func -------------------------------------------------------------------------------------------------------------
 def exportPoints():
     tempLabel.config(text='Exporting...')
@@ -59,7 +61,7 @@ def showLinRegOpt():
 
 def clearCurr():
     for x,y in currPoint:
-        plotX, plotY = x - 2, -1 * (y-1002)
+        plotX, plotY = x-2, -1*(y-1002)
         graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'white')
     
     currPoint.clear()
@@ -68,12 +70,28 @@ def plotLinearRegPoints():
     clearCurr()
     
     tempLabel.config(text=f'Plotting {linRegSlope.get()}x + {linRegConstant.get()} : [{linRegSpread.get()}]')
-    for a in range(0, 1500, 15):
-        x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
-        y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
-        plotX, plotY = x-2, 1002-y
-        graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
-        currPoint.append([x,y])
+
+    if linRegSlope.get() == 90:
+        for a in range(0, 1000, 10):
+            y = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
+            x = (y - linRegConstant.get()) / math.tan(linRegSlope.get() * DEG_TO_RAD)
+            plotX, plotY = x, 1002-y
+            graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
+            currPoint.append([x,y])
+    if linRegSlope.get() > 45 and linRegSlope.get() < 135:
+        for a in range(0, 1000, 10):
+            y = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
+            x = (y - linRegConstant.get()) / math.tan(linRegSlope.get() * DEG_TO_RAD)
+            plotX, plotY = x-2, 1002-y
+            graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
+            currPoint.append([x,y])
+    else: 
+        for a in range(0, 1500, 15):
+            x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
+            y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
+            plotX, plotY = x-2, 1002-y
+            graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
+            currPoint.append([x,y])
 
 def saveLinearRegPoints():
     global points
@@ -81,6 +99,7 @@ def saveLinearRegPoints():
 
 def showLogRegOpt():
     print('show logistic regression')
+
 
 
 # if __name__ == '__main__': ----------------------------------------------------------------------------------------
