@@ -74,28 +74,28 @@ def randomSpread(spread):
 
 def plotLinearRegPoints():
     # clearCurr()
-    # tempLabel.config(text=f'Plotting {linRegSlope.get()}x + {linRegConstant.get()} : [{linRegSpread.get()}]')
-
-    if linRegSlope.get() == 90:
-        for a in range(0, CANVAS_HEIGHT, 10):
-            y = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
-            x = (y - linRegConstant.get()) / math.tan(linRegSlope.get() * DEG_TO_RAD)
-            plotX, plotY = x, 1002-y
-            graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
-            currPoint.append([x,y])
-    if linRegSlope.get() > 45 and linRegSlope.get() < 135:
-        for a in range(0, CANVAS_HEIGHT, 10):
-            y = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
-            x = (y - linRegConstant.get()) / math.tan(linRegSlope.get() * DEG_TO_RAD)
-            plotX, plotY = x-2, 1002-y
-            graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
-            currPoint.append([x,y])
-    else: 
-        for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
-            x = a + randomSpread(linRegSpread.get())
-            y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + randomSpread(linRegSpread.get())
-            plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
-            plotPoint(plotX,plotY)
+    # TODO HERE 
+    # if linRegSlope.get() == 90:
+    #     for a in range(0, CANVAS_HEIGHT, 10):
+    #         y = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
+    #         x = (y - linRegConstant.get()) / math.tan(linRegSlope.get() * DEG_TO_RAD)
+    #         plotX, plotY = x, 1002-y
+    #         graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
+    #         currPoint.append([x,y])
+    # if linRegSlope.get() > 45 and linRegSlope.get() < 135:
+    #     for a in range(0, CANVAS_HEIGHT, 10):
+    #         y = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
+    #         x = (y - linRegConstant.get()) / math.tan(linRegSlope.get() * DEG_TO_RAD)
+    #         plotX, plotY = x-2, 1002-y
+    #         graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
+    #         currPoint.append([x,y])
+    # else: 
+    for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
+        x = a + randomSpread(linRegSpread.get())
+        y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + randomSpread(linRegSpread.get())
+        plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
+        plotPoint(plotX,plotY)
+        points.append([plotX, plotY])
             
 
 def saveLinearRegPoints():
