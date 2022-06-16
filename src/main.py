@@ -1,5 +1,7 @@
+from fileinput import filename
 from tkinter import *
 from random import *
+from os.path import exists
 import csv
 import math
 
@@ -22,14 +24,31 @@ def canvasToGraphPoint(canvasPoint):
         graphPoint.append([x-CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y])
     return graphPoint
 
+def getOutputFileName():
+    count = 0
+    fileName = 'points_'+str(count)+'.csv'
+    while exists(fileName):
+        count += 1
+        fileName = 'points_'+str(count)+'.csv'
+
+    return fileName
+
 def exportPoints():
     pointsToExp = canvasToGraphPoint(points)
+    filename = getOutputFileName()
 
     tempLabel.config(text='Exporting...')
-    with open('points.csv', 'w', newline='', encoding='utf-8') as csvfile:
-        csvwriter = csv.writer(csvfile) 
-        csvwriter.writerows([['x','y']])
-        csvwriter.writerows(pointsToExp)
+    isSaved = True
+    try:
+        with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
+            csvwriter = csv.writer(csvfile) 
+            csvwriter.writerows([['x','y']])
+            csvwriter.writerows(pointsToExp)
+    except Exception as e:
+        print(e)
+        isSaved = False
+
+    tempLabel.config(text=f'Exported as {filename}') if isSaved else tempLabel.config(text='Cannot export successfully!') 
 
 def plotPoint(x,y):
     graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'blue')
@@ -66,22 +85,12 @@ def showLinRegOpt():
 #     for x,y in currPoint:
 #         plotX, plotY = x-2, -1*(y-1002)
 #         graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'white')
-    
 #     currPoint.clear()
 
 def randomSpread(spread):
     return (random() * spread) - spread/2
 
 def plotLinearRegPoints():
-    # clearCurr()
-    # TODO HERE 
-    # if linRegSlope.get() == 90:
-    #     for a in range(0, CANVAS_HEIGHT, 10):
-    #         y = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
-    #         x = (y - linRegConstant.get()) / math.tan(linRegSlope.get() * DEG_TO_RAD)
-    #         plotX, plotY = x, 1002-y
-    #         graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
-    #         currPoint.append([x,y])
     if linRegSlope.get() > 45 and linRegSlope.get() < 135:
         for a in range(int(-CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/100)):
             y = a + randomSpread(linRegSpread.get())
@@ -97,7 +106,6 @@ def plotLinearRegPoints():
             plotPoint(plotX,plotY)
             points.append([plotX, plotY])
             
-
 def saveLinearRegPoints():
     global points
     points = points + currPoint
