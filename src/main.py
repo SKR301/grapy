@@ -88,20 +88,23 @@ def plotLinearRegPoints():
             graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
             currPoint.append([x,y])
     else: 
-        yOffset = math.tan(linRegSlope.get() * DEG_TO_RAD) * CANVAS_WIDTH/2 + linRegConstant.get()
-        print(yOffset)
-        for a in range(0, CANVAS_WIDTH, 15):
-            x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
-            y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2 + yOffset
-            plotX, plotY = x-2, 1002-y
-            graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
-            currPoint.append([x,y])
-        for a in range(0, CANVAS_WIDTH, 15):
-            x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
-            y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
-            plotX, plotY = x-2, 1002-y
-            graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
-            currPoint.append([x,y])
+        # yOffset = CANVAS_HEIGHT/2 - math.tan(linRegSlope.get() * DEG_TO_RAD) * CANVAS_WIDTH/2 + linRegConstant.get()
+        # for a in range(0, CANVAS_WIDTH, 15):
+        #     x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
+        #     y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2 + yOffset
+        #     plotX, plotY = x-2, 1002-y
+        #     graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
+        #     currPoint.append([x,y])
+        for a in range(0, int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/50)):
+            x = a
+            y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get()
+            plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
+            plotPoint(plotX,plotY)
+            # print(x,y)
+            plotX = CANVAS_WIDTH/2 - x
+            plotY = y + CANVAS_HEIGHT/2
+            plotPoint(plotX,plotY)
+            
 
 def saveLinearRegPoints():
     global points
@@ -154,7 +157,7 @@ linRegFrame.grid(row=1, column=0)
 linRegSlopeLabel = Label(linRegFrame, text='Slope')
 linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=linRegSlope)
 linRegConstantLabel = Label(linRegFrame, text='Y-intercept')
-linRegConstantScale = Scale(linRegFrame, from_=-CANVAS_HEIGHT, to=CANVAS_HEIGHT, orient=HORIZONTAL, length=200, variable=linRegConstant)
+linRegConstantScale = Scale(linRegFrame, from_=-CANVAS_HEIGHT/2, to=CANVAS_HEIGHT/2, orient=HORIZONTAL, length=200, variable=linRegConstant)
 linRegSpreadLabel = Label(linRegFrame, text='Spread')
 linRegSpreadScale = Scale(linRegFrame, from_=0, to=200, orient=HORIZONTAL, length=200, variable=linRegSpread)
 linRegOptBtnFrame = Frame(linRegFrame, bd=2)
