@@ -15,31 +15,24 @@ linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
 linRegSpread = DoubleVar()
 
-
-# func -------------------------------------------------------------------------------------------------------------
+# functions -------------------------------------------------------------------------------------------------------------
 def exportPoints():
+    pointsToExp = []
+    for x,y in points:
+        pointsToExp.append([x-CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y])
+
     tempLabel.config(text='Exporting...')
     with open('points.csv', 'w', newline='', encoding='utf-8') as csvfile:
         csvwriter = csv.writer(csvfile) 
         csvwriter.writerows([['x','y']])
-        csvwriter.writerows(points)
+        csvwriter.writerows(pointsToExp)
+
+def plotPoint(x,y):
+    graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'blue')
 
 def plotManualPoint(event):
-    x, y = event.x-2, 1002-event.y
-    if x<0 or x>CANVAS_WIDTH or y<0 or y>CANVAS_HEIGHT:
-        return
-
-    graph.create_oval(event.x-3, event.y-3, event.x+3, event.y+3, width = 0, fill = 'blue')
-    points.append([x, y])
-    tempLabel.config(text=f'Plot at {x}, {y}')
-
-def undoPlotManualPoint(event):
-    if len(points) < 1:
-        return
-
-    lastPoint = points.pop(-1)
-    x, y = lastPoint[0]+2, -1 * (lastPoint[1]-1002)
-    graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'white')
+    plotPoint(event.x, event.y)
+    points.append([event.x, event.y])
 
 def hideLinRegOpt():
     linRegSlopeScale.grid_remove()
@@ -100,8 +93,18 @@ def saveLinearRegPoints():
 def showLogRegOpt():
     print('show logistic regression')
 
+def initGraph():
+    graph.create_line(CANVAS_WIDTH/2, 0, CANVAS_WIDTH/2, CANVAS_HEIGHT, fill='#cccccc', width=2)
+    graph.create_line(0, CANVAS_HEIGHT/2, CANVAS_WIDTH, CANVAS_HEIGHT/2, fill='#cccccc', width=2)
+    for a in range(int(CANVAS_WIDTH/2), CANVAS_WIDTH, 50):
+        graph.create_line(a, 0, a, CANVAS_HEIGHT, fill='#cccccc', width=1)
+        graph.create_line(a-CANVAS_WIDTH/2, 0, a-CANVAS_WIDTH/2, CANVAS_HEIGHT, fill='#cccccc', width=1)
+    for a in range(int(CANVAS_HEIGHT/2), CANVAS_HEIGHT, 50):
+        graph.create_line(0, a, CANVAS_WIDTH, a, fill='#cccccc', width=1)
+        graph.create_line(0, a-CANVAS_HEIGHT/2, CANVAS_WIDTH, a-CANVAS_HEIGHT/2, fill='#cccccc', width=1)
 
 # MAIN---
+    # TOP BAR---
 topBarFrame = Frame(root, bd=5)
 topBarFrame.grid(row=0, column=0)
 
@@ -111,17 +114,10 @@ graphFrame.grid(row=1, column=0)
 
 graph = Canvas(graphFrame, bg='white', height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
 graph.grid(row=0, column=0)
-graph.create_line(CANVAS_WIDTH/2, 0, CANVAS_WIDTH/2, CANVAS_HEIGHT, fill='#cccccc', width=2)
-graph.create_line(0, CANVAS_HEIGHT/2, CANVAS_WIDTH, CANVAS_HEIGHT/2, fill='#cccccc', width=2)
-for a in range(int(CANVAS_WIDTH/2), CANVAS_WIDTH, 50):
-    graph.create_line(a, 0, a, CANVAS_HEIGHT, fill='#cccccc', width=1)
-    graph.create_line(a-CANVAS_WIDTH/2, 0, a-CANVAS_WIDTH/2, CANVAS_HEIGHT, fill='#cccccc', width=1)
-for a in range(int(CANVAS_HEIGHT/2), CANVAS_HEIGHT, 50):
-    graph.create_line(0, a, CANVAS_WIDTH, a, fill='#cccccc', width=1)
-    graph.create_line(0, a-CANVAS_HEIGHT/2, CANVAS_WIDTH, a-CANVAS_HEIGHT/2, fill='#cccccc', width=1)
+initGraph()
 
 graph.bind('<Button-1>', plotManualPoint)
-graph.bind_all('<Control-z>', undoPlotManualPoint)
+# graph.bind_all('<Control-z>', undoPlotManualPoint)
 
 #   RIGHT MENU---
 menuBarFrame = Frame(root, bd=5)
@@ -130,7 +126,6 @@ menuBarFrame.grid(row=1, column=1)
         # LINEAR REGRESSION---
 linRegBtn = Button(menuBarFrame, text='Linear Reg', command=showLinRegOpt)
 linRegBtn.grid(row=0, column=0)
-
 
 linRegFrame = Frame(menuBarFrame, bd=5)
 linRegFrame.grid(row=1, column=0)
