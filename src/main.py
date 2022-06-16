@@ -39,8 +39,11 @@ def plotManualPoint(event):
     points.append([event.x, event.y])
 
 def hideLinRegOpt():
+    linRegSlopeLabel.grid_remove()
     linRegSlopeScale.grid_remove()
+    linRegConstantLabel.grid_remove()
     linRegConstantScale.grid_remove()
+    linRegSpreadLabel.grid_remove()
     linRegSpreadScale.grid_remove()
     linRegOptBtnFrame.grid_remove()
     linRegPointPlt.grid_remove()
@@ -131,10 +134,10 @@ menuBarFrame = Frame(root, bd=5)
 menuBarFrame.grid(row=1, column=1)
 
         # LINEAR REGRESSION---
-linRegBtn = Button(menuBarFrame, text='Linear Reg', command=showLinRegOpt)
+linRegBtn = Button(menuBarFrame, text='Linear Reg', width=40, command=showLinRegOpt)
 linRegBtn.grid(row=0, column=0)
 
-linRegFrame = Frame(menuBarFrame, bd=5)
+linRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
 linRegFrame.grid(row=1, column=0)
 
 linRegSlopeLabel = Label(linRegFrame, text='Slope')
