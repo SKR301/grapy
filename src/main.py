@@ -16,10 +16,14 @@ linRegConstant = DoubleVar()
 linRegSpread = DoubleVar()
 
 # functions -------------------------------------------------------------------------------------------------------------
+def canvasToGraphPoint(canvasPoint):
+    graphPoint = []
+    for x,y in canvasPoint:
+        graphPoint.append([x-CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y])
+    return graphPoint
+
 def exportPoints():
-    pointsToExp = []
-    for x,y in points:
-        pointsToExp.append([x-CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y])
+    pointsToExp = canvasToGraphPoint(points)
 
     tempLabel.config(text='Exporting...')
     with open('points.csv', 'w', newline='', encoding='utf-8') as csvfile:
@@ -44,10 +48,13 @@ def hideLinRegOpt():
     linRegBtn.config(command=showLinRegOpt)
 
 def showLinRegOpt():
-    linRegSlopeScale.grid(row=0, column=0)
-    linRegConstantScale.grid(row=1, column=0)
-    linRegSpreadScale.grid(row=2, column=0)
-    linRegOptBtnFrame.grid(row=3, column=0)
+    linRegSlopeLabel.grid(row=0,column=0)
+    linRegSlopeScale.grid(row=0, column=1)
+    linRegConstantLabel.grid(row=1,column=0)
+    linRegConstantScale.grid(row=1, column=1)
+    linRegSpreadLabel.grid(row=2, column=0)
+    linRegSpreadScale.grid(row=2, column=1)
+    linRegOptBtnFrame.grid(row=3, columnspan=2)
     linRegPointPlt.grid(row=0, column=0)
     linRegPointSave.grid(row=0, column=1)
     linRegBtn.config(command=hideLinRegOpt)
@@ -130,9 +137,12 @@ linRegBtn.grid(row=0, column=0)
 linRegFrame = Frame(menuBarFrame, bd=5)
 linRegFrame.grid(row=1, column=0)
 
-linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=300, variable=linRegSlope)
-linRegConstantScale = Scale(linRegFrame, from_=-CANVAS_WIDTH, to=CANVAS_WIDTH, orient=HORIZONTAL, length=300, variable=linRegConstant)
-linRegSpreadScale = Scale(linRegFrame, from_=0, to=200, orient=HORIZONTAL, length=300, variable=linRegSpread)
+linRegSlopeLabel = Label(linRegFrame, text='Slope')
+linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=linRegSlope)
+linRegConstantLabel = Label(linRegFrame, text='Y-intercept')
+linRegConstantScale = Scale(linRegFrame, from_=-CANVAS_HEIGHT, to=CANVAS_HEIGHT, orient=HORIZONTAL, length=200, variable=linRegConstant)
+linRegSpreadLabel = Label(linRegFrame, text='Spread')
+linRegSpreadScale = Scale(linRegFrame, from_=0, to=200, orient=HORIZONTAL, length=200, variable=linRegSpread)
 linRegOptBtnFrame = Frame(linRegFrame, bd=2)
 linRegPointPlt = Button(linRegOptBtnFrame, text='Plot', command=plotLinearRegPoints)
 linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=saveLinearRegPoints)
