@@ -110,13 +110,18 @@ graphFrame = Frame(root, bd=5)
 graphFrame.grid(row=1, column=0)
 
 graph = Canvas(graphFrame, bg='white', height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
-graph.bind('<Button-1>', plotManualPoint)
-graph.bind_all('<Control-z>', undoPlotManualPoint)
 graph.grid(row=0, column=0)
 graph.create_line(CANVAS_WIDTH/2, 0, CANVAS_WIDTH/2, CANVAS_HEIGHT, fill='#cccccc', width=2)
 graph.create_line(0, CANVAS_HEIGHT/2, CANVAS_WIDTH, CANVAS_HEIGHT/2, fill='#cccccc', width=2)
-for a in range(0, CANVAS_WIDTH, 100):
-    graph.create_line(, 0, , CANVAS_HEIGHT, fill='#cccccc', width=1)
+for a in range(int(CANVAS_WIDTH/2), CANVAS_WIDTH, 50):
+    graph.create_line(a, 0, a, CANVAS_HEIGHT, fill='#cccccc', width=1)
+    graph.create_line(a-CANVAS_WIDTH/2, 0, a-CANVAS_WIDTH/2, CANVAS_HEIGHT, fill='#cccccc', width=1)
+for a in range(int(CANVAS_HEIGHT/2), CANVAS_HEIGHT, 50):
+    graph.create_line(0, a, CANVAS_WIDTH, a, fill='#cccccc', width=1)
+    graph.create_line(0, a-CANVAS_HEIGHT/2, CANVAS_WIDTH, a-CANVAS_HEIGHT/2, fill='#cccccc', width=1)
+
+graph.bind('<Button-1>', plotManualPoint)
+graph.bind_all('<Control-z>', undoPlotManualPoint)
 
 #   RIGHT MENU---
 menuBarFrame = Frame(root, bd=5)
