@@ -95,14 +95,10 @@ def plotLinearRegPoints():
         #     plotX, plotY = x-2, 1002-y
         #     graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
         #     currPoint.append([x,y])
-        for a in range(0, int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/50)):
+        for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
             x = a
             y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get()
             plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
-            plotPoint(plotX,plotY)
-            # print(x,y)
-            plotX = CANVAS_WIDTH/2 - x
-            plotY = y + CANVAS_HEIGHT/2
             plotPoint(plotX,plotY)
             
 
