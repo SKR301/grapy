@@ -62,17 +62,16 @@ def showLinRegOpt():
     linRegPointSave.grid(row=0, column=1)
     linRegBtn.config(command=hideLinRegOpt)
 
-def clearCurr():
-    for x,y in currPoint:
-        plotX, plotY = x-2, -1*(y-1002)
-        graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'white')
+# def clearCurr():
+#     for x,y in currPoint:
+#         plotX, plotY = x-2, -1*(y-1002)
+#         graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'white')
     
-    currPoint.clear()
+#     currPoint.clear()
 
 def plotLinearRegPoints():
-    clearCurr()
-    
-    tempLabel.config(text=f'Plotting {linRegSlope.get()}x + {linRegConstant.get()} : [{linRegSpread.get()}]')
+    # clearCurr()
+    # tempLabel.config(text=f'Plotting {linRegSlope.get()}x + {linRegConstant.get()} : [{linRegSpread.get()}]')
 
     if linRegSlope.get() == 90:
         for a in range(0, CANVAS_HEIGHT, 10):
@@ -89,6 +88,14 @@ def plotLinearRegPoints():
             graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
             currPoint.append([x,y])
     else: 
+        yOffset = math.tan(linRegSlope.get() * DEG_TO_RAD) * CANVAS_WIDTH/2 + linRegConstant.get()
+        print(yOffset)
+        for a in range(0, CANVAS_WIDTH, 15):
+            x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
+            y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2 + yOffset
+            plotX, plotY = x-2, 1002-y
+            graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
+            currPoint.append([x,y])
         for a in range(0, CANVAS_WIDTH, 15):
             x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
             y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
@@ -102,6 +109,9 @@ def saveLinearRegPoints():
 
 def showLogRegOpt():
     print('show logistic regression')
+
+def displayCursorLocation(event):
+    tempLabel.config(text=f'[{event.x-CANVAS_WIDTH/2},{CANVAS_HEIGHT/2-event.y}]')
 
 def initGraph():
     graph.create_line(CANVAS_WIDTH/2, 0, CANVAS_WIDTH/2, CANVAS_HEIGHT, fill='#cccccc', width=2)
@@ -127,6 +137,7 @@ graph.grid(row=0, column=0)
 initGraph()
 
 graph.bind('<Button-1>', plotManualPoint)
+graph.bind('<Motion>', displayCursorLocation)
 # graph.bind_all('<Control-z>', undoPlotManualPoint)
 
 #   RIGHT MENU---
