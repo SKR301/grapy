@@ -10,10 +10,10 @@ root.title('grapy')
 points = []
 currPoint = []
 DEG_TO_RAD = 0.01745329
+CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000
 linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
 linRegSpread = DoubleVar()
-
 
 
 # func -------------------------------------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ def exportPoints():
 
 def plotManualPoint(event):
     x, y = event.x-2, 1002-event.y
-    if x<0 or x>1500 or y<0 or y>1000:
+    if x<0 or x>CANVAS_WIDTH or y<0 or y>CANVAS_HEIGHT:
         return
 
     graph.create_oval(event.x-3, event.y-3, event.x+3, event.y+3, width = 0, fill = 'blue')
@@ -72,21 +72,21 @@ def plotLinearRegPoints():
     tempLabel.config(text=f'Plotting {linRegSlope.get()}x + {linRegConstant.get()} : [{linRegSpread.get()}]')
 
     if linRegSlope.get() == 90:
-        for a in range(0, 1000, 10):
+        for a in range(0, CANVAS_HEIGHT, 10):
             y = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
             x = (y - linRegConstant.get()) / math.tan(linRegSlope.get() * DEG_TO_RAD)
             plotX, plotY = x, 1002-y
             graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
             currPoint.append([x,y])
     if linRegSlope.get() > 45 and linRegSlope.get() < 135:
-        for a in range(0, 1000, 10):
+        for a in range(0, CANVAS_HEIGHT, 10):
             y = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
             x = (y - linRegConstant.get()) / math.tan(linRegSlope.get() * DEG_TO_RAD)
             plotX, plotY = x-2, 1002-y
             graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'blue')
             currPoint.append([x,y])
     else: 
-        for a in range(0, 1500, 15):
+        for a in range(0, CANVAS_WIDTH, 15):
             x = a + (random() * linRegSpread.get()) - linRegSpread.get()/2
             y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + (random() * linRegSpread.get()) - linRegSpread.get()/2
             plotX, plotY = x-2, 1002-y
@@ -101,23 +101,28 @@ def showLogRegOpt():
     print('show logistic regression')
 
 
-
-# if __name__ == '__main__': ----------------------------------------------------------------------------------------
+# MAIN---
 topBarFrame = Frame(root, bd=5)
 topBarFrame.grid(row=0, column=0)
 
+#   GRAPH---
 graphFrame = Frame(root, bd=5)
 graphFrame.grid(row=1, column=0)
 
-graph = Canvas(graphFrame, bg='white', height=1000, width=1500)
+graph = Canvas(graphFrame, bg='white', height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
 graph.bind('<Button-1>', plotManualPoint)
 graph.bind_all('<Control-z>', undoPlotManualPoint)
 graph.grid(row=0, column=0)
+graph.create_line(CANVAS_WIDTH/2, 0, CANVAS_WIDTH/2, CANVAS_HEIGHT, fill='#cccccc', width=2)
+graph.create_line(0, CANVAS_HEIGHT/2, CANVAS_WIDTH, CANVAS_HEIGHT/2, fill='#cccccc', width=2)
+for a in range(0, CANVAS_WIDTH, 100):
+    graph.create_line(, 0, , CANVAS_HEIGHT, fill='#cccccc', width=1)
 
-
+#   RIGHT MENU---
 menuBarFrame = Frame(root, bd=5)
 menuBarFrame.grid(row=1, column=1)
 
+        # LINEAR REGRESSION---
 linRegBtn = Button(menuBarFrame, text='Linear Reg', command=showLinRegOpt)
 linRegBtn.grid(row=0, column=0)
 
@@ -126,20 +131,17 @@ linRegFrame = Frame(menuBarFrame, bd=5)
 linRegFrame.grid(row=1, column=0)
 
 linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=300, variable=linRegSlope)
-linRegConstantScale = Scale(linRegFrame, from_=-1500, to=1500, orient=HORIZONTAL, length=300, variable=linRegConstant)
+linRegConstantScale = Scale(linRegFrame, from_=-CANVAS_WIDTH, to=CANVAS_WIDTH, orient=HORIZONTAL, length=300, variable=linRegConstant)
 linRegSpreadScale = Scale(linRegFrame, from_=0, to=200, orient=HORIZONTAL, length=300, variable=linRegSpread)
 linRegOptBtnFrame = Frame(linRegFrame, bd=2)
 linRegPointPlt = Button(linRegOptBtnFrame, text='Plot', command=plotLinearRegPoints)
 linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=saveLinearRegPoints)
 
-# logRegnBtn = Button(menuBarFrame, text='Logistic Reg', command=showLogRegOpt)
-# logRegnBtn.grid(row=1, column=0)
-
-
+    # BOTTOM LABEL---
 tempLabel = Label(root, text='SKRinternationals 2022')
 tempLabel.grid(row=2, column=0)
 
-
+    # EXPORT---
 exportBtn = Button(root, text='Export', command=exportPoints, padx=150, bg='#0078d7', fg='white')
 exportBtn.grid(row=2, column=1)
 
