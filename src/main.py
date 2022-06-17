@@ -34,6 +34,7 @@ def getOutputFileName():
     return fileName
 
 def exportPoints():
+    print('exporting ',len(points),' points')
     pointsToExp = canvasToGraphPoint(points)
     filename = getOutputFileName()
 
@@ -49,16 +50,17 @@ def exportPoints():
         isSaved = False
 
     tempLabel.config(text=f'Exported as {filename}') if isSaved else tempLabel.config(text='Cannot export successfully!') 
+    # points.clear()
 
 def undoPlotPoint(event):
-    if len(pointCountList) < 0:
+    if len(pointCountList) <= 0:
         return
     ptsToUndo = pointCountList.pop(-1)
 
     for a in range(ptsToUndo):
         x,y = points.pop(-1)
         plotPoint(x,y,'white')
-    
+    print(f'points left {len(points)}')
     initGraph()
         
 def plotPoint(x,y,colour):
@@ -93,11 +95,11 @@ def showLinRegOpt():
     linRegPointSave.grid(row=0, column=1)
     linRegBtn.config(command=hideLinRegOpt)
 
-# def clearCurr():
-#     for x,y in currPoint:
-#         plotX, plotY = x-2, -1*(y-1002)
-#         graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'white')
-#     currPoint.clear()
+def clearCurr():
+    for x,y in currPoint:
+        plotPoint(x, y, 'white')
+    currPoint.clear()
+    initGraph()
 
 def randomSpread(spread):
     return (random() * spread) - spread/2
@@ -109,19 +111,19 @@ def plotLinearRegPoints():
             x = (y - linRegConstant.get())/(math.tan(linRegSlope.get() * DEG_TO_RAD)) + randomSpread(linRegSpread.get())
             plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
             plotPoint(plotX, plotY, 'blue')
-            points.append([plotX, plotY])
+            currPoint.append([plotX, plotY])
     else: 
         for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
             x = a + randomSpread(linRegSpread.get())
             y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + randomSpread(linRegSpread.get())
             plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
             plotPoint(plotX, plotY, 'blue')
-            points.append([plotX, plotY])
-    pointCountList.append(100)
+            currPoint.append([plotX, plotY])
             
 def saveLinearRegPoints():
     global points
     points = points + currPoint
+    pointCountList.append(100)
 
 def showLogRegOpt():
     print('show logistic regression')
