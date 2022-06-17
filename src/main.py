@@ -34,7 +34,7 @@ def getOutputFileName():
     return fileName
 
 def exportPoints():
-    print('exporting ',len(points),' points')
+    print(f'exporting {len(points)} points')
     pointsToExp = canvasToGraphPoint(points)
     filename = getOutputFileName()
 
@@ -50,7 +50,7 @@ def exportPoints():
         isSaved = False
 
     tempLabel.config(text=f'Exported as {filename}') if isSaved else tempLabel.config(text='Cannot export successfully!') 
-    # points.clear()
+    points.clear()
 
 def undoPlotPoint(event):
     if len(pointCountList) <= 0:
@@ -105,6 +105,7 @@ def randomSpread(spread):
     return (random() * spread) - spread/2
 
 def plotLinearRegPoints():
+    clearCurr()
     if linRegSlope.get() > 45 and linRegSlope.get() < 135:
         for a in range(int(-CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/100)):
             y = a + randomSpread(linRegSpread.get())
@@ -119,10 +120,12 @@ def plotLinearRegPoints():
             plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
             plotPoint(plotX, plotY, 'blue')
             currPoint.append([plotX, plotY])
-            
+          
 def saveLinearRegPoints():
     global points
+    print(f'points before plotting {len(points)}')
     points = points + currPoint
+    print(f'points after plotting {len(points)}')
     pointCountList.append(100)
 
 def showLogRegOpt():
