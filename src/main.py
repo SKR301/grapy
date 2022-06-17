@@ -1,4 +1,3 @@
-from fileinput import filename
 from tkinter import *
 from random import *
 from os.path import exists
@@ -10,6 +9,7 @@ root.state('zoomed')
 root.title('grapy')
 
 points = []
+pointCountList = []
 currPoint = []
 DEG_TO_RAD = 0.01745329
 CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000
@@ -50,12 +50,24 @@ def exportPoints():
 
     tempLabel.config(text=f'Exported as {filename}') if isSaved else tempLabel.config(text='Cannot export successfully!') 
 
-def plotPoint(x,y):
-    graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'blue')
+def undoPlotPoint(event):
+    if len(pointCountList) < 0:
+        return
+    ptsToUndo = pointCountList.pop(-1)
+
+    for a in range(ptsToUndo):
+        x,y = points.pop(-1)
+        plotPoint(x,y,'white')
+    
+    initGraph()
+        
+def plotPoint(x,y,colour):
+    graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = colour)
 
 def plotManualPoint(event):
-    plotPoint(event.x, event.y)
+    plotPoint(event.x, event.y, 'blue')
     points.append([event.x, event.y])
+    pointCountList.append(1)
 
 def hideLinRegOpt():
     linRegSlopeLabel.grid_remove()
@@ -96,15 +108,16 @@ def plotLinearRegPoints():
             y = a + randomSpread(linRegSpread.get())
             x = (y - linRegConstant.get())/(math.tan(linRegSlope.get() * DEG_TO_RAD)) + randomSpread(linRegSpread.get())
             plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
-            plotPoint(plotX,plotY)
+            plotPoint(plotX, plotY, 'blue')
             points.append([plotX, plotY])
     else: 
-        for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/150)):
+        for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
             x = a + randomSpread(linRegSpread.get())
             y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + randomSpread(linRegSpread.get())
             plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
-            plotPoint(plotX,plotY)
+            plotPoint(plotX, plotY, 'blue')
             points.append([plotX, plotY])
+    pointCountList.append(100)
             
 def saveLinearRegPoints():
     global points
@@ -141,7 +154,7 @@ initGraph()
 
 graph.bind('<Button-1>', plotManualPoint)
 graph.bind('<Motion>', displayCursorLocation)
-# graph.bind_all('<Control-z>', undoPlotManualPoint)
+graph.bind_all('<Control-z>', undoPlotPoint)
 
 #   RIGHT MENU---
 menuBarFrame = Frame(root, bd=5)
