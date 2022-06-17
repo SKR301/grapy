@@ -21,7 +21,7 @@ linRegSpread = DoubleVar()
 def canvasToGraphPoint(canvasPoint):
     graphPoint = []
     for x,y in canvasPoint:
-        graphPoint.append([x-CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y])
+        graphPoint.append([round(x-CANVAS_WIDTH/2, 2), round(CANVAS_HEIGHT/2-y, 2)])
     return graphPoint
 
 def getOutputFileName():
@@ -34,7 +34,6 @@ def getOutputFileName():
     return fileName
 
 def exportPoints():
-    print(f'exporting {len(points)} points')
     pointsToExp = canvasToGraphPoint(points)
     filename = getOutputFileName()
 
@@ -94,12 +93,16 @@ def showLinRegOpt():
     linRegPointSave.grid(row=0, column=1)
     linRegBtn.config(command=hideLinRegOpt)
 
+def initPoints():
+    for x,y in points:
+        plotPoint(x, y, 'blue')
+
 def clearCurr():
     for x,y in currPoint:
         plotPoint(x, y, 'white')
     currPoint.clear()
     initGraph()
-    print(f'points after clearing {len(points)}')
+    initPoints()
 
 def randomSpread(spread):
     return (random() * spread) - spread/2
@@ -123,9 +126,7 @@ def plotLinearRegPoints():
           
 def saveLinearRegPoints():
     global points
-    print(f'points before plotting {len(points)}')
     points = points + currPoint
-    print(f'points after plotting {len(points)}')
     pointCountList.append(100)
     currPoint.clear()
 
