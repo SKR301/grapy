@@ -49,8 +49,7 @@ def exportPoints():
         print(e)
         isSaved = False
 
-    tempLabel.config(text=f'Exported as {filename}') if isSaved else tempLabel.config(text='Cannot export successfully!') 
-    points.clear()
+    tempLabel.config(text=f'Exported as {filename}') if isSaved else tempLabel.config(text='Cannot export successfully!')
 
 def undoPlotPoint(event):
     if len(pointCountList) <= 0:
@@ -100,6 +99,7 @@ def clearCurr():
         plotPoint(x, y, 'white')
     currPoint.clear()
     initGraph()
+    print(f'points after clearing {len(points)}')
 
 def randomSpread(spread):
     return (random() * spread) - spread/2
@@ -127,6 +127,7 @@ def saveLinearRegPoints():
     points = points + currPoint
     print(f'points after plotting {len(points)}')
     pointCountList.append(100)
+    currPoint.clear()
 
 def showLogRegOpt():
     print('show logistic regression')
