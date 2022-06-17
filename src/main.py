@@ -1,4 +1,3 @@
-from fileinput import filename
 from tkinter import *
 from random import *
 from os.path import exists
@@ -10,6 +9,7 @@ root.state('zoomed')
 root.title('grapy')
 
 points = []
+pointCountList = []
 currPoint = []
 DEG_TO_RAD = 0.01745329
 CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000
@@ -34,6 +34,7 @@ def getOutputFileName():
     return fileName
 
 def exportPoints():
+    print(f'exporting {len(points)} points')
     pointsToExp = canvasToGraphPoint(points)
     filename = getOutputFileName()
 
@@ -48,14 +49,26 @@ def exportPoints():
         print(e)
         isSaved = False
 
-    tempLabel.config(text=f'Exported as {filename}') if isSaved else tempLabel.config(text='Cannot export successfully!') 
+    tempLabel.config(text=f'Exported as {filename}') if isSaved else tempLabel.config(text='Cannot export successfully!')
 
-def plotPoint(x,y):
-    graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = 'blue')
+def undoPlotPoint(event):
+    if len(pointCountList) <= 0:
+        return
+    ptsToUndo = pointCountList.pop(-1)
+
+    for a in range(ptsToUndo):
+        x,y = points.pop(-1)
+        plotPoint(x,y,'white')
+    print(f'points left {len(points)}')
+    initGraph()
+        
+def plotPoint(x,y,colour):
+    graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = colour)
 
 def plotManualPoint(event):
-    plotPoint(event.x, event.y)
+    plotPoint(event.x, event.y, 'blue')
     points.append([event.x, event.y])
+    pointCountList.append(1)
 
 def hideLinRegOpt():
     linRegSlopeLabel.grid_remove()
@@ -81,34 +94,40 @@ def showLinRegOpt():
     linRegPointSave.grid(row=0, column=1)
     linRegBtn.config(command=hideLinRegOpt)
 
-# def clearCurr():
-#     for x,y in currPoint:
-#         plotX, plotY = x-2, -1*(y-1002)
-#         graph.create_oval(plotX-3, plotY-3, plotX+3, plotY+3, width = 0, fill = 'white')
-#     currPoint.clear()
+def clearCurr():
+    for x,y in currPoint:
+        plotPoint(x, y, 'white')
+    currPoint.clear()
+    initGraph()
+    print(f'points after clearing {len(points)}')
 
 def randomSpread(spread):
     return (random() * spread) - spread/2
 
 def plotLinearRegPoints():
+    clearCurr()
     if linRegSlope.get() > 45 and linRegSlope.get() < 135:
         for a in range(int(-CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/100)):
             y = a + randomSpread(linRegSpread.get())
             x = (y - linRegConstant.get())/(math.tan(linRegSlope.get() * DEG_TO_RAD)) + randomSpread(linRegSpread.get())
             plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
-            plotPoint(plotX,plotY)
-            points.append([plotX, plotY])
+            plotPoint(plotX, plotY, 'blue')
+            currPoint.append([plotX, plotY])
     else: 
         for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
             x = a + randomSpread(linRegSpread.get())
             y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + randomSpread(linRegSpread.get())
             plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
-            plotPoint(plotX,plotY)
-            points.append([plotX, plotY])
-            
+            plotPoint(plotX, plotY, 'blue')
+            currPoint.append([plotX, plotY])
+          
 def saveLinearRegPoints():
     global points
+    print(f'points before plotting {len(points)}')
     points = points + currPoint
+    print(f'points after plotting {len(points)}')
+    pointCountList.append(100)
+    currPoint.clear()
 
 def showLogRegOpt():
     print('show logistic regression')
@@ -141,7 +160,7 @@ initGraph()
 
 graph.bind('<Button-1>', plotManualPoint)
 graph.bind('<Motion>', displayCursorLocation)
-# graph.bind_all('<Control-z>', undoPlotManualPoint)
+graph.bind_all('<Control-z>', undoPlotPoint)
 
 #   RIGHT MENU---
 menuBarFrame = Frame(root, bd=5)
