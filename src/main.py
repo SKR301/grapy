@@ -16,6 +16,9 @@ CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000
 linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
 linRegSpread = DoubleVar()
+logRegSlope = DoubleVar()
+logRegConstant = DoubleVar()
+logRegSpread = DoubleVar()
 
 # functions -------------------------------------------------------------------------------------------------------------
 def canvasToGraphPoint(canvasPoint):
@@ -95,6 +98,32 @@ def showLinRegOpt():
     linRegPointSave.grid(row=0, column=1)
     linRegBtn.config(command=hideLinRegOpt)
 
+def hideLogRegOpt():
+    logRegFrame.grid_remove()
+    logRegSlopeLabel.grid_remove()
+    logRegSlopeScale.grid_remove()
+    logRegConstantLabel.grid_remove()
+    logRegConstantScale.grid_remove()
+    logRegSpreadLabel.grid_remove()
+    logRegSpreadScale.grid_remove()
+    logRegOptBtnFrame.grid_remove()
+    logRegPointPlt.grid_remove()
+    logRegPointSave.grid_remove()
+    logRegBtn.config(command=showLogRegOpt)
+
+def showLogRegOpt():
+    logRegFrame.grid(row=3, column=0)
+    logRegSlopeLabel.grid(row=0,column=0)
+    logRegSlopeScale.grid(row=0, column=1)
+    logRegConstantLabel.grid(row=1,column=0)
+    logRegConstantScale.grid(row=1, column=1)
+    logRegSpreadLabel.grid(row=2, column=0)
+    logRegSpreadScale.grid(row=2, column=1)
+    logRegOptBtnFrame.grid(row=3, columnspan=2)
+    logRegPointPlt.grid(row=0, column=0)
+    logRegPointSave.grid(row=0, column=1)
+    logRegBtn.config(command=hideLogRegOpt)
+
 def initPoints():
     for x,y in points:
         plotPoint(x, y, 'blue')
@@ -132,8 +161,30 @@ def saveLinearRegPoints():
     pointCountList.append(100)
     currPoint.clear()
 
-def showLogRegOpt():
-    print('show logistic regression')
+def plotLogisticRegPoints():
+    # clearCurr()
+    # if linRegSlope.get() > 45 and linRegSlope.get() < 135:
+    #     for a in range(int(-CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/100)):
+    #         y = a + randomSpread(linRegSpread.get())
+    #         x = (y - linRegConstant.get())/(math.tan(linRegSlope.get() * DEG_TO_RAD)) + randomSpread(linRegSpread.get())
+    #         plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
+    #         plotPoint(plotX, plotY, 'blue')
+    #         currPoint.append([plotX, plotY])
+    # else: 
+    #     for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
+    #         x = a + randomSpread(linRegSpread.get())
+    #         y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + randomSpread(linRegSpread.get())
+    #         plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
+    #         plotPoint(plotX, plotY, 'blue')
+    #         currPoint.append([plotX, plotY])
+    print('plot log')
+          
+def saveLogisticRegPoints():
+    # global points
+    # points = points + currPoint
+    # pointCountList.append(100)
+    # currPoint.clear()
+    print('save log')
 
 def displayCursorLocation(event):
     tempLabel.config(text=f'[{event.x-CANVAS_WIDTH/2},{CANVAS_HEIGHT/2-event.y}]')
@@ -187,7 +238,7 @@ linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=saveLinearRegPo
 
         # LINEAR REGRESSION---
 logRegBtn = Button(menuBarFrame, text='Linear Reg', width=40, command=showLogRegOpt)
-logRegBtn.grid(row=1, column=0)
+logRegBtn.grid(row=2, column=0)
 
 logRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
 
