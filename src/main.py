@@ -45,7 +45,7 @@ def getOutputFileName():
 def exportPoints():
     pointsToExp = []
     for x, y in points:
-        pointsToExp.append([canvasToGraphPoint(x, y)])
+        pointsToExp.append(canvasToGraphPoint(x, y))
     
     filename = getOutputFileName()
 
@@ -69,9 +69,10 @@ def undoPlotPoint(event):
 
     for a in range(ptsToUndo):
         x,y = points.pop(-1)
-        plotPoint(x,y,'white')
-    print(f'points left {len(points)}')
+        plotPoint(x, y, 'white')
     initGraph()
+    for x,y in points:
+        plotPoint(x, y, 'blue')
         
 def plotPoint(x,y,colour):
     graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = colour)
