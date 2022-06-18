@@ -154,26 +154,22 @@ def plotLinearRegPoints():
     tempLabel.config(text=f'y = {math.tan(linRegSlope.get())}x + {linRegConstant.get()}')
 
     if linRegSlope.get() > 45 and linRegSlope.get() < 135:
-        # for a in range(int(-CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/100)):
-        #     y = a + randomSpread(linRegSpread.get())
-        #     x = (y - linRegConstant.get())/(math.tan(linRegSlope.get() * DEG_TO_RAD)) + randomSpread(linRegSpread.get())
-        #     plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
-        #     plotPoint(plotX, plotY, 'blue')
-        #     currPoint.append([plotX, plotY])
         a = -GRAPH_HEIGHT/2
         while a < GRAPH_HEIGHT/2:
-            y = a + randomSpread(linRegSpread.get())
-            x = (y - linRegConstant.get())/(math.tan(linRegSlope.get() * DEG_TO_RAD)) + randomSpread(linRegSpread.get())
-            plotX,plotY = graphToCanvasPoints(x, y)
+            y = a
+            x = (y - linRegConstant.get())/(math.tan(linRegSlope.get() * DEG_TO_RAD))
+            x, y = x + randomSpread(linRegSpread.get()), y + randomSpread(linRegSpread.get())
+            plotX, plotY = graphToCanvasPoints(x, y)
             plotPoint(plotX, plotY, 'blue')
             currPoint.append([plotX, plotY])
             a += GRAPH_HEIGHT/100
     else: 
         a = -GRAPH_WIDTH/2
         while a < GRAPH_WIDTH/2:
-            x = a + randomSpread(linRegSpread.get())
-            y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + randomSpread(linRegSpread.get())
-            plotX,plotY = graphToCanvasPoints(x, y)
+            x = a
+            y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get()
+            x, y = x + randomSpread(linRegSpread.get()), y + randomSpread(linRegSpread.get())
+            plotX, plotY = graphToCanvasPoints(x, y)
             plotPoint(plotX, plotY, 'blue')
             currPoint.append([plotX, plotY])
             a += GRAPH_WIDTH/100
@@ -187,13 +183,28 @@ def saveLinearRegPoints():
 def plotLogisticRegPoints():
     clearCurr()
     tempLabel.config(text=f'y = 1/(1+e^({logRegSlope.get()}x + {logRegConstant.get()}))')
-    for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
-        x = a + randomSpread(logRegSpread.get())
-        z = math.tan(logRegSlope.get() * DEG_TO_RAD) * x + logRegConstant.get()
-        y = 1/(1+pow(math.e,-z)) + randomSpread(logRegSpread.get())
-        plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
-        plotPoint(plotX, plotY, 'blue')
-        currPoint.append([plotX, plotY])
+    
+    if logRegSlope.get() == 90:
+        a = -GRAPH_WIDTH/2
+        while a < GRAPH_WIDTH/2:
+            x = a
+            y = 0 if a < 0 else 1
+            x, y = x + randomSpread(linRegSpread.get()), y + randomSpread(linRegSpread.get())
+            plotX,plotY = graphToCanvasPoints(x, y)
+            plotPoint(plotX, plotY, 'blue')
+            currPoint.append([plotX, plotY])
+            a += GRAPH_WIDTH/100
+    else:    
+        a = -GRAPH_WIDTH/2
+        while a < GRAPH_WIDTH/2:
+            x = a
+            z = math.tan(logRegSlope.get() * DEG_TO_RAD) * x + logRegConstant.get()
+            y = 1/(1+pow(math.e,-z))
+            x, y = x + randomSpread(linRegSpread.get()), y + randomSpread(linRegSpread.get())
+            plotX, plotY = graphToCanvasPoints(x, y)
+            plotPoint(plotX, plotY, 'blue')
+            currPoint.append([plotX, plotY])
+            a += GRAPH_WIDTH/100
           
 def saveLogisticRegPoints():
     global points
