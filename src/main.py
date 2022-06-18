@@ -21,11 +21,17 @@ logRegConstant = DoubleVar()
 logRegSpread = DoubleVar()
 
 # functions -------------------------------------------------------------------------------------------------------------
-def canvasToGraphPoint(canvasPoint):
-    graphPoint = []
-    for x,y in canvasPoint:
-        graphPoint.append([round(x-CANVAS_WIDTH/2, 10), round(CANVAS_HEIGHT/2-y, 10)])
-    return graphPoint
+def canvasToGraphPoint(canvasX, canvasY):
+    x, y = canvasX-CANVAS_WIDTH/2, CANVAS_HEIGHT/2-canvasY
+    x, y = x/50, y/50
+    graphX, graphY = round(x, 10), round(y, 10)
+    return graphX, graphY
+
+def graphToCanvasPoints(graphX, graphY):
+    x, y = graphX*50, graphY*50
+    x, y = x+CANVAS_WIDTH/2, -(CANVAS_HEIGHT/2+y)
+    canvasX, canvasY = round(x, 10), round(y, 10)
+    return canvasX, canvasY
 
 def getOutputFileName():
     count = 0
@@ -37,7 +43,10 @@ def getOutputFileName():
     return fileName
 
 def exportPoints():
-    pointsToExp = canvasToGraphPoint(points)
+    pointsToExp = []
+    for x, y in points:
+        pointsToExp.append([canvasToGraphPoint(x, y)])
+    
     filename = getOutputFileName()
 
     tempLabel.config(text='Exporting...')
@@ -180,7 +189,8 @@ def saveLogisticRegPoints():
     currPoint.clear()
 
 def displayCursorLocation(event):
-    tempLabel.config(text=f'[{event.x-CANVAS_WIDTH/2},{CANVAS_HEIGHT/2-event.y}]')
+    x, y = canvasToGraphPoint(event.x, event.y)
+    tempLabel.config(text=f'[{x},{y}]')
 
 def initGraph():
     graph.create_line(CANVAS_WIDTH/2, 0, CANVAS_WIDTH/2, CANVAS_HEIGHT, fill='#cccccc', width=2)
