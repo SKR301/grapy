@@ -189,7 +189,7 @@ def plotLogisticRegPoints():
         while a < GRAPH_WIDTH/2:
             x = a
             y = 0 if a < 0 else 1
-            x, y = x + randomSpread(linRegSpread.get()), y + randomSpread(linRegSpread.get())
+            x, y = x + randomSpread(logRegSpread.get()), y + randomSpread(logRegSpread.get())
             plotX,plotY = graphToCanvasPoints(x, y)
             plotPoint(plotX, plotY, 'blue')
             currPoint.append([plotX, plotY])
@@ -200,7 +200,7 @@ def plotLogisticRegPoints():
             x = a
             z = math.tan(logRegSlope.get() * DEG_TO_RAD) * x + logRegConstant.get()
             y = 1/(1+pow(math.e,-z))
-            x, y = x + randomSpread(linRegSpread.get()), y + randomSpread(linRegSpread.get())
+            x, y = x + randomSpread(logRegSpread.get()), y + randomSpread(logRegSpread.get())
             plotX, plotY = graphToCanvasPoints(x, y)
             plotPoint(plotX, plotY, 'blue')
             currPoint.append([plotX, plotY])
@@ -254,7 +254,7 @@ linRegBtn.grid(row=0, column=0)
 
 linRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
 
-linRegSlopeLabel = Label(linRegFrame, text='Theta')
+linRegSlopeLabel = Label(linRegFrame, text='Elevation')
 linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=linRegSlope)
 linRegConstantLabel = Label(linRegFrame, text='Y-intercept')
 linRegConstantScale = Scale(linRegFrame, from_=-GRAPH_HEIGHT/2, to=GRAPH_HEIGHT/2, orient=HORIZONTAL, length=200, variable=linRegConstant)
@@ -270,12 +270,12 @@ logRegBtn.grid(row=2, column=0)
 
 logRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
 
-logRegSlopeLabel = Label(logRegFrame, text='Slope')
+logRegSlopeLabel = Label(logRegFrame, text='Elevation')
 logRegSlopeScale = Scale(logRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=logRegSlope)
-logRegConstantLabel = Label(logRegFrame, text='Y-intercept')
-logRegConstantScale = Scale(logRegFrame, from_=-CANVAS_HEIGHT/2, to=CANVAS_HEIGHT/2, orient=HORIZONTAL, length=200, variable=logRegConstant)
+logRegConstantLabel = Label(logRegFrame, text='Distance from Origin')
+logRegConstantScale = Scale(logRegFrame, from_=-GRAPH_WIDTH/2, to=GRAPH_WIDTH/2, orient=HORIZONTAL, length=200, variable=logRegConstant)
 logRegSpreadLabel = Label(logRegFrame, text='Spread')
-logRegSpreadScale = Scale(logRegFrame, from_=0, to=200, orient=HORIZONTAL, length=200, variable=logRegSpread)
+logRegSpreadScale = Scale(logRegFrame, from_=0, to=1, resolution=0.1, orient=HORIZONTAL, length=200, variable=logRegSpread)
 logRegOptBtnFrame = Frame(logRegFrame, bd=2)
 logRegPointPlt = Button(logRegOptBtnFrame, text='Plot', command=plotLogisticRegPoints)
 logRegPointSave = Button(logRegOptBtnFrame, text='Save', command=saveLogisticRegPoints)
