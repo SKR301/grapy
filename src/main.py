@@ -16,12 +16,15 @@ CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000
 linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
 linRegSpread = DoubleVar()
+logRegSlope = DoubleVar()
+logRegConstant = DoubleVar()
+logRegSpread = DoubleVar()
 
 # functions -------------------------------------------------------------------------------------------------------------
 def canvasToGraphPoint(canvasPoint):
     graphPoint = []
     for x,y in canvasPoint:
-        graphPoint.append([round(x-CANVAS_WIDTH/2, 2), round(CANVAS_HEIGHT/2-y, 2)])
+        graphPoint.append([round(x-CANVAS_WIDTH/2, 10), round(CANVAS_HEIGHT/2-y, 10)])
     return graphPoint
 
 def getOutputFileName():
@@ -95,6 +98,32 @@ def showLinRegOpt():
     linRegPointSave.grid(row=0, column=1)
     linRegBtn.config(command=hideLinRegOpt)
 
+def hideLogRegOpt():
+    logRegFrame.grid_remove()
+    logRegSlopeLabel.grid_remove()
+    logRegSlopeScale.grid_remove()
+    logRegConstantLabel.grid_remove()
+    logRegConstantScale.grid_remove()
+    logRegSpreadLabel.grid_remove()
+    logRegSpreadScale.grid_remove()
+    logRegOptBtnFrame.grid_remove()
+    logRegPointPlt.grid_remove()
+    logRegPointSave.grid_remove()
+    logRegBtn.config(command=showLogRegOpt)
+
+def showLogRegOpt():
+    logRegFrame.grid(row=3, column=0)
+    logRegSlopeLabel.grid(row=0,column=0)
+    logRegSlopeScale.grid(row=0, column=1)
+    logRegConstantLabel.grid(row=1,column=0)
+    logRegConstantScale.grid(row=1, column=1)
+    logRegSpreadLabel.grid(row=2, column=0)
+    logRegSpreadScale.grid(row=2, column=1)
+    logRegOptBtnFrame.grid(row=3, columnspan=2)
+    logRegPointPlt.grid(row=0, column=0)
+    logRegPointSave.grid(row=0, column=1)
+    logRegBtn.config(command=hideLogRegOpt)
+
 def initPoints():
     for x,y in points:
         plotPoint(x, y, 'blue')
@@ -111,6 +140,7 @@ def randomSpread(spread):
 
 def plotLinearRegPoints():
     clearCurr()
+    tempLabel.config(text=f'y = {logRegSlope.get()}x + {logRegConstant.get()}')
     if linRegSlope.get() > 45 and linRegSlope.get() < 135:
         for a in range(int(-CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/100)):
             y = a + randomSpread(linRegSpread.get())
@@ -132,8 +162,22 @@ def saveLinearRegPoints():
     pointCountList.append(100)
     currPoint.clear()
 
-def showLogRegOpt():
-    print('show logistic regression')
+def plotLogisticRegPoints():
+    clearCurr()
+    tempLabel.config(text=f'y = 1/(1+e^({logRegSlope.get()}x + {logRegConstant.get()}))')
+    for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
+        x = a + randomSpread(logRegSpread.get())
+        z = math.tan(logRegSlope.get() * DEG_TO_RAD) * x + logRegConstant.get()
+        y = 1/(1+pow(math.e,-z)) + randomSpread(logRegSpread.get())
+        plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
+        plotPoint(plotX, plotY, 'blue')
+        currPoint.append([plotX, plotY])
+          
+def saveLogisticRegPoints():
+    global points
+    points = points + currPoint
+    pointCountList.append(100)
+    currPoint.clear()
 
 def displayCursorLocation(event):
     tempLabel.config(text=f'[{event.x-CANVAS_WIDTH/2},{CANVAS_HEIGHT/2-event.y}]')
@@ -184,6 +228,22 @@ linRegSpreadScale = Scale(linRegFrame, from_=0, to=200, orient=HORIZONTAL, lengt
 linRegOptBtnFrame = Frame(linRegFrame, bd=2)
 linRegPointPlt = Button(linRegOptBtnFrame, text='Plot', command=plotLinearRegPoints)
 linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=saveLinearRegPoints)
+
+        # LINEAR REGRESSION---
+logRegBtn = Button(menuBarFrame, text='Logistic Reg', width=40, command=showLogRegOpt)
+logRegBtn.grid(row=2, column=0)
+
+logRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
+
+logRegSlopeLabel = Label(logRegFrame, text='Slope')
+logRegSlopeScale = Scale(logRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=logRegSlope)
+logRegConstantLabel = Label(logRegFrame, text='Y-intercept')
+logRegConstantScale = Scale(logRegFrame, from_=-CANVAS_HEIGHT/2, to=CANVAS_HEIGHT/2, orient=HORIZONTAL, length=200, variable=logRegConstant)
+logRegSpreadLabel = Label(logRegFrame, text='Spread')
+logRegSpreadScale = Scale(logRegFrame, from_=0, to=200, orient=HORIZONTAL, length=200, variable=logRegSpread)
+logRegOptBtnFrame = Frame(logRegFrame, bd=2)
+logRegPointPlt = Button(logRegOptBtnFrame, text='Plot', command=plotLogisticRegPoints)
+logRegPointSave = Button(logRegOptBtnFrame, text='Save', command=saveLogisticRegPoints)
 
     # BOTTOM LABEL---
 tempLabel = Label(root, text='SKRinternationals 2022')
