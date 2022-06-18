@@ -237,7 +237,7 @@ linRegPointPlt = Button(linRegOptBtnFrame, text='Plot', command=plotLinearRegPoi
 linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=saveLinearRegPoints)
 
         # LINEAR REGRESSION---
-logRegBtn = Button(menuBarFrame, text='Linear Reg', width=40, command=showLogRegOpt)
+logRegBtn = Button(menuBarFrame, text='Logistic Reg', width=40, command=showLogRegOpt)
 logRegBtn.grid(row=2, column=0)
 
 logRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
