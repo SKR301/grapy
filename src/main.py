@@ -184,7 +184,13 @@ def plotLogisticRegPoints():
     clearCurr()
     tempLabel.config(text=f'y = 1/(1+e^({logRegSlope.get()}x + {logRegConstant.get()}))')
     
-    if logRegSlope.get() == 90:
+    theta = logRegSlope.get()
+    if theta == 89:
+        theta = 88
+    if theta == 91:
+        theta = 92
+        
+    if theta == 90:
         a = -GRAPH_WIDTH/2
         while a < GRAPH_WIDTH/2:
             x = a
@@ -198,7 +204,7 @@ def plotLogisticRegPoints():
         a = -GRAPH_WIDTH/2
         while a < GRAPH_WIDTH/2:
             x = a
-            z = math.tan(logRegSlope.get() * DEG_TO_RAD) * x + logRegConstant.get()
+            z = math.tan(theta * DEG_TO_RAD) * x + logRegConstant.get()
             y = 1/(1+pow(math.e,-z))
             x, y = x + randomSpread(logRegSpread.get()), y + randomSpread(logRegSpread.get())
             plotX, plotY = graphToCanvasPoints(x, y)
