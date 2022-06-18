@@ -185,6 +185,22 @@ linRegOptBtnFrame = Frame(linRegFrame, bd=2)
 linRegPointPlt = Button(linRegOptBtnFrame, text='Plot', command=plotLinearRegPoints)
 linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=saveLinearRegPoints)
 
+        # LINEAR REGRESSION---
+logRegBtn = Button(menuBarFrame, text='Linear Reg', width=40, command=showLogRegOpt)
+logRegBtn.grid(row=1, column=0)
+
+logRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
+
+logRegSlopeLabel = Label(logRegFrame, text='Slope')
+logRegSlopeScale = Scale(logRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=logRegSlope)
+logRegConstantLabel = Label(logRegFrame, text='Y-intercept')
+logRegConstantScale = Scale(logRegFrame, from_=-CANVAS_HEIGHT/2, to=CANVAS_HEIGHT/2, orient=HORIZONTAL, length=200, variable=logRegConstant)
+logRegSpreadLabel = Label(logRegFrame, text='Spread')
+logRegSpreadScale = Scale(logRegFrame, from_=0, to=200, orient=HORIZONTAL, length=200, variable=logRegSpread)
+logRegOptBtnFrame = Frame(logRegFrame, bd=2)
+logRegPointPlt = Button(logRegOptBtnFrame, text='Plot', command=plotLogisticRegPoints)
+logRegPointSave = Button(logRegOptBtnFrame, text='Save', command=saveLogisticRegPoints)
+
     # BOTTOM LABEL---
 tempLabel = Label(root, text='SKRinternationals 2022')
 tempLabel.grid(row=2, column=0)
