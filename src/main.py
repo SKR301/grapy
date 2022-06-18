@@ -189,7 +189,7 @@ def plotLogisticRegPoints():
         theta = 88
     if theta == 91:
         theta = 92
-        
+
     if theta == 90:
         a = -GRAPH_WIDTH/2
         while a < GRAPH_WIDTH/2:
@@ -219,9 +219,11 @@ def saveLogisticRegPoints():
     currPoint.clear()
 
 def displayCursorLocation(event):
-    x1, y1 = canvasToGraphPoint(event.x, event.y)
-    x2, y2 = graphToCanvasPoints(x1, y1)
-    tempLabel.config(text=f'[{event.x},{event.y}]=>[{x1},{y1}]=>[{x2},{y2}]')
+    # x1, y1 = canvasToGraphPoint(event.x, event.y)
+    # x2, y2 = graphToCanvasPoints(x1, y1)
+    # tempLabel.config(text=f'[{event.x},{event.y}]=>[{x1},{y1}]=>[{x2},{y2}]')
+    x, y = canvasToGraphPoint(event.x, event.y)
+    tempLabel.config(text=f'[{x},{y}]')
 
 def initGraph():
     graph.create_line(CANVAS_WIDTH/2, 0, CANVAS_WIDTH/2, CANVAS_HEIGHT, fill='#cccccc', width=2)
