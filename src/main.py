@@ -140,6 +140,7 @@ def randomSpread(spread):
 
 def plotLinearRegPoints():
     clearCurr()
+    tempLabel.config(text=f'y = {logRegSlope.get()}x + {logRegConstant.get()}')
     if linRegSlope.get() > 45 and linRegSlope.get() < 135:
         for a in range(int(-CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/100)):
             y = a + randomSpread(linRegSpread.get())
