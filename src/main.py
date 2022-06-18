@@ -70,6 +70,7 @@ def plotManualPoint(event):
     pointCountList.append(1)
 
 def hideLinRegOpt():
+    linRegFrame.grid_remove()
     linRegSlopeLabel.grid_remove()
     linRegSlopeScale.grid_remove()
     linRegConstantLabel.grid_remove()
@@ -82,6 +83,7 @@ def hideLinRegOpt():
     linRegBtn.config(command=showLinRegOpt)
 
 def showLinRegOpt():
+    linRegFrame.grid(row=1, column=0)
     linRegSlopeLabel.grid(row=0,column=0)
     linRegSlopeScale.grid(row=0, column=1)
     linRegConstantLabel.grid(row=1,column=0)
@@ -172,7 +174,6 @@ linRegBtn = Button(menuBarFrame, text='Linear Reg', width=40, command=showLinReg
 linRegBtn.grid(row=0, column=0)
 
 linRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
-linRegFrame.grid(row=1, column=0)
 
 linRegSlopeLabel = Label(linRegFrame, text='Slope')
 linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=linRegSlope)
