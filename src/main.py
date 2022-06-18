@@ -280,7 +280,7 @@ logRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=
 
 logRegSlopeLabel = Label(logRegFrame, text='Elevation')
 logRegSlopeScale = Scale(logRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=logRegSlope)
-logRegConstantLabel = Label(logRegFrame, text='Distance from Origin')
+logRegConstantLabel = Label(logRegFrame, text='Dist. from Origin')
 logRegConstantScale = Scale(logRegFrame, from_=-GRAPH_WIDTH/2, to=GRAPH_WIDTH/2, orient=HORIZONTAL, length=200, variable=logRegConstant)
 logRegSpreadLabel = Label(logRegFrame, text='Spread')
 logRegSpreadScale = Scale(logRegFrame, from_=0, to=1, resolution=0.1, orient=HORIZONTAL, length=200, variable=logRegSpread)
