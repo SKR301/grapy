@@ -13,6 +13,7 @@ pointCountList = []
 currPoint = []
 DEG_TO_RAD = 0.01745329
 CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000
+GRAPH_WIDTH, GRAPH_HEIGHT = 30, 20
 linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
 linRegSpread = DoubleVar()
@@ -29,7 +30,7 @@ def canvasToGraphPoint(canvasX, canvasY):
 
 def graphToCanvasPoints(graphX, graphY):
     x, y = graphX*50, graphY*50
-    x, y = x+CANVAS_WIDTH/2, -(CANVAS_HEIGHT/2+y)
+    x, y = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
     canvasX, canvasY = round(x, 10), round(y, 10)
     return canvasX, canvasY
 
@@ -150,21 +151,32 @@ def randomSpread(spread):
 
 def plotLinearRegPoints():
     clearCurr()
-    tempLabel.config(text=f'y = {logRegSlope.get()}x + {logRegConstant.get()}')
+    tempLabel.config(text=f'y = {math.tan(linRegSlope.get())}x + {linRegConstant.get()}')
+
     if linRegSlope.get() > 45 and linRegSlope.get() < 135:
-        for a in range(int(-CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/100)):
+        # for a in range(int(-CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/100)):
+        #     y = a + randomSpread(linRegSpread.get())
+        #     x = (y - linRegConstant.get())/(math.tan(linRegSlope.get() * DEG_TO_RAD)) + randomSpread(linRegSpread.get())
+        #     plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
+        #     plotPoint(plotX, plotY, 'blue')
+        #     currPoint.append([plotX, plotY])
+        a = -GRAPH_HEIGHT/2
+        while a < GRAPH_HEIGHT/2:
             y = a + randomSpread(linRegSpread.get())
             x = (y - linRegConstant.get())/(math.tan(linRegSlope.get() * DEG_TO_RAD)) + randomSpread(linRegSpread.get())
-            plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
+            plotX,plotY = graphToCanvasPoints(x, y)
             plotPoint(plotX, plotY, 'blue')
             currPoint.append([plotX, plotY])
+            a += GRAPH_HEIGHT/100
     else: 
-        for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
+        a = -GRAPH_WIDTH/2
+        while a < GRAPH_WIDTH/2:
             x = a + randomSpread(linRegSpread.get())
             y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + randomSpread(linRegSpread.get())
-            plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
+            plotX,plotY = graphToCanvasPoints(x, y)
             plotPoint(plotX, plotY, 'blue')
             currPoint.append([plotX, plotY])
+            a += GRAPH_WIDTH/100
           
 def saveLinearRegPoints():
     global points
@@ -190,8 +202,9 @@ def saveLogisticRegPoints():
     currPoint.clear()
 
 def displayCursorLocation(event):
-    x, y = canvasToGraphPoint(event.x, event.y)
-    tempLabel.config(text=f'[{x},{y}]')
+    x1, y1 = canvasToGraphPoint(event.x, event.y)
+    x2, y2 = graphToCanvasPoints(x1, y1)
+    tempLabel.config(text=f'[{event.x},{event.y}]=>[{x1},{y1}]=>[{x2},{y2}]')
 
 def initGraph():
     graph.create_line(CANVAS_WIDTH/2, 0, CANVAS_WIDTH/2, CANVAS_HEIGHT, fill='#cccccc', width=2)
