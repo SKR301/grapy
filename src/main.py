@@ -24,7 +24,7 @@ logRegSpread = DoubleVar()
 def canvasToGraphPoint(canvasPoint):
     graphPoint = []
     for x,y in canvasPoint:
-        graphPoint.append([round(x-CANVAS_WIDTH/2, 2), round(CANVAS_HEIGHT/2-y, 2)])
+        graphPoint.append([round(x-CANVAS_WIDTH/2, 10), round(CANVAS_HEIGHT/2-y, 10)])
     return graphPoint
 
 def getOutputFileName():
@@ -162,29 +162,21 @@ def saveLinearRegPoints():
     currPoint.clear()
 
 def plotLogisticRegPoints():
-    # clearCurr()
-    # if linRegSlope.get() > 45 and linRegSlope.get() < 135:
-    #     for a in range(int(-CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/2), int(CANVAS_HEIGHT/100)):
-    #         y = a + randomSpread(linRegSpread.get())
-    #         x = (y - linRegConstant.get())/(math.tan(linRegSlope.get() * DEG_TO_RAD)) + randomSpread(linRegSpread.get())
-    #         plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
-    #         plotPoint(plotX, plotY, 'blue')
-    #         currPoint.append([plotX, plotY])
-    # else: 
-    #     for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
-    #         x = a + randomSpread(linRegSpread.get())
-    #         y = math.tan(linRegSlope.get() * DEG_TO_RAD) * x + linRegConstant.get() + randomSpread(linRegSpread.get())
-    #         plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
-    #         plotPoint(plotX, plotY, 'blue')
-    #         currPoint.append([plotX, plotY])
-    print('plot log')
+    clearCurr()
+    tempLabel.config(text=f'y = 1/(1+e^({logRegSlope.get()}x + {logRegConstant.get()}))')
+    for a in range(int(-CANVAS_WIDTH/2), int(CANVAS_WIDTH/2), int(CANVAS_WIDTH/100)):
+        x = a + randomSpread(logRegSpread.get())
+        z = math.tan(logRegSlope.get() * DEG_TO_RAD) * x + logRegConstant.get()
+        y = 1/(1+pow(math.e,-z)) + randomSpread(logRegSpread.get())
+        plotX,plotY = x+CANVAS_WIDTH/2, CANVAS_HEIGHT/2-y
+        plotPoint(plotX, plotY, 'blue')
+        currPoint.append([plotX, plotY])
           
 def saveLogisticRegPoints():
-    # global points
-    # points = points + currPoint
-    # pointCountList.append(100)
-    # currPoint.clear()
-    print('save log')
+    global points
+    points = points + currPoint
+    pointCountList.append(100)
+    currPoint.clear()
 
 def displayCursorLocation(event):
     tempLabel.config(text=f'[{event.x-CANVAS_WIDTH/2},{CANVAS_HEIGHT/2-event.y}]')
