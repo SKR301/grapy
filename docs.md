@@ -1,4 +1,4 @@
-## gUIDE [WIP]
+## guide [WIP]
 
 ### COMPONENTS
 <table>
