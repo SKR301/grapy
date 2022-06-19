@@ -254,7 +254,7 @@ graph.bind_all('<Control-z>', undoPlotPoint)
 
 #   RIGHT MENU---
 menuBarFrame = Frame(root, bd=5)
-menuBarFrame.grid(row=1, column=1)
+menuBarFrame.grid(row=1, column=1)  
 
         # LINEAR REGRESSION---
 linRegBtn = Button(menuBarFrame, text='Linear Reg', width=40, command=showLinRegOpt)
