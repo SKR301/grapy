@@ -74,7 +74,7 @@ def undoPlotPoint(event):
     if len(pointCountList) <= 0:
         return
     ptsToUndo = pointCountList.pop(-1)
-
+    
     for a in range(ptsToUndo):
         x,y = points.pop(-1)
         plotPoint(x, y, 'white')
@@ -254,7 +254,7 @@ def plotClusterPoints(event):
         xOffset, yOffset = randomSpread(clusterRadius.get()) * CANVAS_GRAPH_RATIO, randomSpread(clusterRadius.get()) * CANVAS_GRAPH_RATIO
         plotX, plotY = event.x + xOffset, event.y + yOffset
         plotPoint(plotX, plotY, 'blue')
-        points.append([event.x, event.y])
+        points.append([plotX, plotY])
     pointCountList.append(int(clusterPointsCount.get()))
 
 def displayCursorLocation(event):
