@@ -155,8 +155,6 @@ def hideClusterOpt():
     clusterRadiusLabel.grid_remove()
     clusterRadiusScale.grid_remove()
     clusterBtnFrame.grid_remove()
-    clusterPointPlt.grid_remove()
-    clusterPointPlt.grid_remove()
     clusterBtn.config(command=showClusterOpt)
 
 def showClusterOpt():
@@ -166,8 +164,6 @@ def showClusterOpt():
     clusterRadiusLabel.grid(row=1, column=0)
     clusterRadiusScale.grid(row=1, column=1)
     clusterBtnFrame.grid(row=3, columnspan=2)
-    clusterPointPlt.grid(row=0, column=0)
-    clusterPointSave.grid(row=0, column=1)
     clusterBtn.config(command=hideClusterOpt)
 
 def initPoints():
@@ -258,9 +254,8 @@ def plotClusterPoints(event):
         xOffset, yOffset = randomSpread(clusterRadius.get()) * CANVAS_GRAPH_RATIO, randomSpread(clusterRadius.get()) * CANVAS_GRAPH_RATIO
         plotX, plotY = event.x + xOffset, event.y + yOffset
         plotPoint(plotX, plotY, 'blue')
-
-def saveClusterPoints():
-    print()
+        points.append([event.x, event.y])
+    pointCountList.append(int(clusterPointsCount.get()))
 
 def displayCursorLocation(event):
     # x1, y1 = canvasToGraphPoint(event.x, event.y)
@@ -343,8 +338,6 @@ clusterPointsCountScale = Scale(clusterFrame, from_=1, to=20, orient=HORIZONTAL,
 clusterRadiusLabel = Label(clusterFrame, text='Radius')
 clusterRadiusScale = Scale(clusterFrame, from_=0, to=5, resolution=0.1, orient=HORIZONTAL, length=200, variable=clusterRadius)
 clusterBtnFrame = Frame(clusterFrame, bd=2)
-clusterPointPlt = Button(clusterBtnFrame, text='Plot', command=plotClusterPoints)
-clusterPointSave = Button(clusterBtnFrame, text='Save', command=saveClusterPoints)
 
     # BOTTOM LABEL---
 tempLabel = Label(root, text='SKRinternationals 2022')
