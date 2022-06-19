@@ -8,6 +8,9 @@ root = Tk()
 root.state('zoomed')
 root.title('grapy')
 
+p1 = PhotoImage(file = "./src/assets/grapy_logo.png")
+root.iconphoto(False, p1)
+
 points = []
 pointCountList = []
 currPoint = []
