@@ -17,12 +17,15 @@ currPoint = []
 DEG_TO_RAD = 0.01745329
 CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000
 GRAPH_WIDTH, GRAPH_HEIGHT = 30, 20
+CANVAS_GRAPH_RATIO = 50
 linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
 linRegSpread = DoubleVar()
 logRegSlope = DoubleVar()
 logRegConstant = DoubleVar()
 logRegSpread = DoubleVar()
+clusterRadius = DoubleVar()
+clusterPointsCount = DoubleVar()
 
 # functions -------------------------------------------------------------------------------------------------------------
 def canvasToGraphPoint(canvasX, canvasY):
@@ -70,7 +73,7 @@ def undoPlotPoint(event):
     if len(pointCountList) <= 0:
         return
     ptsToUndo = pointCountList.pop(-1)
-
+    
     for a in range(ptsToUndo):
         x,y = points.pop(-1)
         plotPoint(x, y, 'white')
@@ -85,6 +88,12 @@ def plotManualPoint(event):
     plotPoint(event.x, event.y, 'blue')
     points.append([event.x, event.y])
     pointCountList.append(1)
+
+def clickedGraph(event):
+    if clusterPointsCount.get() > 0 and clusterRadius.get() > 0.0:
+        plotClusterPoints(event)
+    else:
+        plotManualPoint(event)
 
 def hideLinRegOpt():
     linRegFrame.grid_remove()
@@ -137,6 +146,24 @@ def showLogRegOpt():
     logRegPointPlt.grid(row=0, column=0)
     logRegPointSave.grid(row=0, column=1)
     logRegBtn.config(command=hideLogRegOpt)
+
+def hideClusterOpt():
+    clusterFrame.grid_remove()
+    clusterPointsCountLabel.grid_remove()
+    clusterPointsCountScale.grid_remove()
+    clusterRadiusLabel.grid_remove()
+    clusterRadiusScale.grid_remove()
+    clusterBtnFrame.grid_remove()
+    clusterBtn.config(command=showClusterOpt)
+
+def showClusterOpt():
+    clusterFrame.grid(row=5, column=0)
+    clusterPointsCountLabel.grid(row=0, column=0)
+    clusterPointsCountScale.grid(row=0, column=1)
+    clusterRadiusLabel.grid(row=1, column=0)
+    clusterRadiusScale.grid(row=1, column=1)
+    clusterBtnFrame.grid(row=3, columnspan=2)
+    clusterBtn.config(command=hideClusterOpt)
 
 def initPoints():
     for x,y in points:
@@ -221,6 +248,15 @@ def saveLogisticRegPoints():
     pointCountList.append(100)
     currPoint.clear()
 
+def plotClusterPoints(event):
+    for a in range(int(clusterPointsCount.get())):
+        xOffset, yOffset = randomSpread(2 * clusterRadius.get()) * CANVAS_GRAPH_RATIO, randomSpread(2 * clusterRadius.get()) * CANVAS_GRAPH_RATIO
+        print(xOffset)
+        plotX, plotY = event.x + xOffset, event.y + yOffset
+        plotPoint(plotX, plotY, 'blue')
+        points.append([plotX, plotY])
+    pointCountList.append(int(clusterPointsCount.get()))
+
 def displayCursorLocation(event):
     # x1, y1 = canvasToGraphPoint(event.x, event.y)
     # x2, y2 = graphToCanvasPoints(x1, y1)
@@ -237,7 +273,7 @@ def initGraph():
     for a in range(int(CANVAS_HEIGHT/2), CANVAS_HEIGHT, 50):
         graph.create_line(0, a, CANVAS_WIDTH, a, fill='#cccccc', width=1)
         graph.create_line(0, a-CANVAS_HEIGHT/2, CANVAS_WIDTH, a-CANVAS_HEIGHT/2, fill='#cccccc', width=1)
-
+        
 # MAIN---
     # TOP BAR---
 topBarFrame = Frame(root, bd=5)
@@ -251,7 +287,7 @@ graph = Canvas(graphFrame, bg='white', height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
 graph.grid(row=0, column=0)
 initGraph()
 
-graph.bind('<Button-1>', plotManualPoint)
+graph.bind('<Button-1>', clickedGraph)
 graph.bind('<Motion>', displayCursorLocation)
 graph.bind_all('<Control-z>', undoPlotPoint)
 
@@ -263,7 +299,7 @@ menuBarFrame.grid(row=1, column=1)
 linRegBtn = Button(menuBarFrame, text='Linear Reg', width=40, command=showLinRegOpt)
 linRegBtn.grid(row=0, column=0)
 
-linRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
+linRegFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
 linRegSlopeLabel = Label(linRegFrame, text='Elevation')
 linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=linRegSlope)
@@ -279,17 +315,29 @@ linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=saveLinearRegPo
 logRegBtn = Button(menuBarFrame, text='Logistic Reg', width=40, command=showLogRegOpt)
 logRegBtn.grid(row=2, column=0)
 
-logRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
+logRegFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
 logRegSlopeLabel = Label(logRegFrame, text='Elevation')
 logRegSlopeScale = Scale(logRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=logRegSlope)
-logRegConstantLabel = Label(logRegFrame, text='Y-intercept')
+logRegConstantLabel = Label(logRegFrame, text='X-offset')
 logRegConstantScale = Scale(logRegFrame, from_=-GRAPH_WIDTH/2, to=GRAPH_WIDTH/2, orient=HORIZONTAL, length=200, variable=logRegConstant)
 logRegSpreadLabel = Label(logRegFrame, text='Spread')
 logRegSpreadScale = Scale(logRegFrame, from_=0, to=1, resolution=0.1, orient=HORIZONTAL, length=200, variable=logRegSpread)
 logRegOptBtnFrame = Frame(logRegFrame, bd=2)
 logRegPointPlt = Button(logRegOptBtnFrame, text='Plot', command=plotLogisticRegPoints)
 logRegPointSave = Button(logRegOptBtnFrame, text='Save', command=saveLogisticRegPoints)
+
+        # CLUSTERING---
+clusterBtn = Button(menuBarFrame, text='Cluster', width=40, command=showClusterOpt)
+clusterBtn.grid(row=4, column=0)
+
+clusterFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
+
+clusterPointsCountLabel = Label(clusterFrame, text='# points')
+clusterPointsCountScale = Scale(clusterFrame, from_=1, to=30, orient=HORIZONTAL, length=200, variable=clusterPointsCount)
+clusterRadiusLabel = Label(clusterFrame, text='Radius')
+clusterRadiusScale = Scale(clusterFrame, from_=0, to=3, resolution=0.1, orient=HORIZONTAL, length=200, variable=clusterRadius)
+clusterBtnFrame = Frame(clusterFrame, bd=2)
 
     # BOTTOM LABEL---
 tempLabel = Label(root, text='SKRinternationals 2022')
