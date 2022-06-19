@@ -23,6 +23,8 @@ linRegSpread = DoubleVar()
 logRegSlope = DoubleVar()
 logRegConstant = DoubleVar()
 logRegSpread = DoubleVar()
+clusterRadius = DoubleVar()
+clusterPointsCount = DoubleVar()
 
 # functions -------------------------------------------------------------------------------------------------------------
 def canvasToGraphPoint(canvasX, canvasY):
@@ -138,6 +140,28 @@ def showLogRegOpt():
     logRegPointSave.grid(row=0, column=1)
     logRegBtn.config(command=hideLogRegOpt)
 
+def hideClusterOpt():
+    clusterFrame.grid_remove()
+    clusterPointsCountLabel.grid_remove()
+    clusterPointsCountScale.grid_remove()
+    clusterRadiusLabel.grid_remove()
+    clusterRadiusScale.grid_remove()
+    clusterBtnFrame.grid_remove()
+    clusterPointPlt.grid_remove()
+    clusterPointPlt.grid_remove()
+    clusterBtn.config(command=showLogRegOpt)
+
+def showClusterOpt():
+    clusterFrame.grid(row=5, column=0)
+    clusterPointsCountLabel.grid(row=0, column=0)
+    clusterPointsCountScale.grid(row=0, column=1)
+    clusterRadiusLabel.grid(row=1, column=0)
+    clusterRadiusScale.grid(row=1, column=1)
+    clusterBtnFrame.grid(row=3, columnspan=2)
+    clusterPointPlt.grid(row=0, column=0)
+    clusterPointSave.grid(row=0, column=1)
+    clusterBtn.config(command=hideClusterOpt)
+
 def initPoints():
     for x,y in points:
         plotPoint(x, y, 'blue')
@@ -221,6 +245,12 @@ def saveLogisticRegPoints():
     pointCountList.append(100)
     currPoint.clear()
 
+def plotClusterPoints():
+    print()
+
+def saveClusterPoints():
+    print()
+
 def displayCursorLocation(event):
     # x1, y1 = canvasToGraphPoint(event.x, event.y)
     # x2, y2 = graphToCanvasPoints(x1, y1)
@@ -297,10 +327,10 @@ clusterBtn.grid(row=4, column=0)
 
 clusterFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
-pointsCountLabel = Label(clusterFrame, text='# points')
-pointsCountScale = Scale(clusterFrame, from_=0, to=20, orient=HORIZONTAL, length=200, variable=clusterPointsCount)
+clusterPointsCountLabel = Label(clusterFrame, text='# points')
+clusterPointsCountScale = Scale(clusterFrame, from_=0, to=20, orient=HORIZONTAL, length=200, variable=clusterPointsCount)
 clusterRadiusLabel = Label(clusterFrame, text='Radius')
-clusterRadiusScale = Scale(clusterFrame, from_=-GRAPH_WIDTH/2, to=GRAPH_WIDTH/2, orient=HORIZONTAL, length=200, variable=clusterRadius)
+clusterRadiusScale = Scale(clusterFrame, from_=0, to=5, resolution=0.1, orient=HORIZONTAL, length=200, variable=clusterRadius)
 clusterBtnFrame = Frame(clusterFrame, bd=2)
 clusterPointPlt = Button(clusterBtnFrame, text='Plot', command=plotClusterPoints)
 clusterPointSave = Button(clusterBtnFrame, text='Save', command=saveClusterPoints)
