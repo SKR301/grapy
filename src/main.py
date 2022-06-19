@@ -17,6 +17,7 @@ currPoint = []
 DEG_TO_RAD = 0.01745329
 CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000
 GRAPH_WIDTH, GRAPH_HEIGHT = 30, 20
+manual_cluster = -1
 linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
 linRegSpread = DoubleVar()
@@ -88,6 +89,12 @@ def plotManualPoint(event):
     points.append([event.x, event.y])
     pointCountList.append(1)
 
+def clickedGraph(event):
+    if clusterPointsCount.get() > 0 and clusterRadius.get() > 0.0:
+        plotClusterPoints(event)
+    else:
+        plotManualPoint(event)
+
 def hideLinRegOpt():
     linRegFrame.grid_remove()
     linRegSlopeLabel.grid_remove()
@@ -149,7 +156,7 @@ def hideClusterOpt():
     clusterBtnFrame.grid_remove()
     clusterPointPlt.grid_remove()
     clusterPointPlt.grid_remove()
-    clusterBtn.config(command=showLogRegOpt)
+    clusterBtn.config(command=showClusterOpt)
 
 def showClusterOpt():
     clusterFrame.grid(row=5, column=0)
@@ -245,8 +252,8 @@ def saveLogisticRegPoints():
     pointCountList.append(100)
     currPoint.clear()
 
-def plotClusterPoints():
-    print()
+def plotClusterPoints(event):
+    print(event.x, event.y)
 
 def saveClusterPoints():
     print()
@@ -281,7 +288,7 @@ graph = Canvas(graphFrame, bg='white', height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
 graph.grid(row=0, column=0)
 initGraph()
 
-graph.bind('<Button-1>', plotManualPoint)
+graph.bind('<Button-1>', clickedGraph)
 graph.bind('<Motion>', displayCursorLocation)
 graph.bind_all('<Control-z>', undoPlotPoint)
 
@@ -328,7 +335,7 @@ clusterBtn.grid(row=4, column=0)
 clusterFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
 clusterPointsCountLabel = Label(clusterFrame, text='# points')
-clusterPointsCountScale = Scale(clusterFrame, from_=0, to=20, orient=HORIZONTAL, length=200, variable=clusterPointsCount)
+clusterPointsCountScale = Scale(clusterFrame, from_=1, to=20, orient=HORIZONTAL, length=200, variable=clusterPointsCount)
 clusterRadiusLabel = Label(clusterFrame, text='Radius')
 clusterRadiusScale = Scale(clusterFrame, from_=0, to=5, resolution=0.1, orient=HORIZONTAL, length=200, variable=clusterRadius)
 clusterBtnFrame = Frame(clusterFrame, bd=2)
