@@ -17,6 +17,7 @@ currPoint = []
 DEG_TO_RAD = 0.01745329
 CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000
 GRAPH_WIDTH, GRAPH_HEIGHT = 30, 20
+CANVAS_GRAPH_RATIO = 50
 manual_cluster = -1
 linRegSlope = DoubleVar()
 linRegConstant = DoubleVar()
@@ -253,7 +254,10 @@ def saveLogisticRegPoints():
     currPoint.clear()
 
 def plotClusterPoints(event):
-    print(event.x, event.y)
+    for a in range(int(clusterPointsCount.get())):
+        xOffset, yOffset = randomSpread(clusterRadius.get()) * CANVAS_GRAPH_RATIO, randomSpread(clusterRadius.get()) * CANVAS_GRAPH_RATIO
+        plotX, plotY = event.x + xOffset, event.y + yOffset
+        plotPoint(plotX, plotY, 'blue')
 
 def saveClusterPoints():
     print()
