@@ -263,7 +263,7 @@ menuBarFrame.grid(row=1, column=1)
 linRegBtn = Button(menuBarFrame, text='Linear Reg', width=40, command=showLinRegOpt)
 linRegBtn.grid(row=0, column=0)
 
-linRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
+linRegFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
 linRegSlopeLabel = Label(linRegFrame, text='Elevation')
 linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=linRegSlope)
@@ -279,17 +279,31 @@ linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=saveLinearRegPo
 logRegBtn = Button(menuBarFrame, text='Logistic Reg', width=40, command=showLogRegOpt)
 logRegBtn.grid(row=2, column=0)
 
-logRegFrame = Frame(menuBarFrame,highlightbackground='#aaa', highlightthickness=2, bd=10)
+logRegFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
 logRegSlopeLabel = Label(logRegFrame, text='Elevation')
 logRegSlopeScale = Scale(logRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=logRegSlope)
-logRegConstantLabel = Label(logRegFrame, text='Y-intercept')
+logRegConstantLabel = Label(logRegFrame, text='X-offset')
 logRegConstantScale = Scale(logRegFrame, from_=-GRAPH_WIDTH/2, to=GRAPH_WIDTH/2, orient=HORIZONTAL, length=200, variable=logRegConstant)
 logRegSpreadLabel = Label(logRegFrame, text='Spread')
 logRegSpreadScale = Scale(logRegFrame, from_=0, to=1, resolution=0.1, orient=HORIZONTAL, length=200, variable=logRegSpread)
 logRegOptBtnFrame = Frame(logRegFrame, bd=2)
 logRegPointPlt = Button(logRegOptBtnFrame, text='Plot', command=plotLogisticRegPoints)
 logRegPointSave = Button(logRegOptBtnFrame, text='Save', command=saveLogisticRegPoints)
+
+        # CLUSTERING---
+clusterBtn = Button(menuBarFrame, text='Cluster', width=40, command=showClusterOpt)
+clusterBtn.grid(row=4, column=0)
+
+clusterFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
+
+pointsCountLabel = Label(clusterFrame, text='# points')
+pointsCountScale = Scale(clusterFrame, from_=0, to=20, orient=HORIZONTAL, length=200, variable=clusterPointsCount)
+clusterRadiusLabel = Label(clusterFrame, text='Radius')
+clusterRadiusScale = Scale(clusterFrame, from_=-GRAPH_WIDTH/2, to=GRAPH_WIDTH/2, orient=HORIZONTAL, length=200, variable=clusterRadius)
+clusterBtnFrame = Frame(clusterFrame, bd=2)
+clusterPointPlt = Button(clusterBtnFrame, text='Plot', command=plotClusterPoints)
+clusterPointSave = Button(clusterBtnFrame, text='Save', command=saveClusterPoints)
 
     # BOTTOM LABEL---
 tempLabel = Label(root, text='SKRinternationals 2022')
