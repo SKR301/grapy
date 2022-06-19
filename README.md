@@ -4,6 +4,11 @@ Click here for [documentations](https://github.com/SKR301/grapy/blob/main/docs.m
 
 <p align="center"><img src='https://user-images.githubusercontent.com/47807051/174473410-eab92cb4-5898-4de9-830a-90455eefb547.gif' width='1000'><p>
 
+## Available Plotting Types:-
+- [Manual](https://github.com/SKR301/grapy)
+- [Linear Regression](https://en.wikipedia.org/wiki/Linear_regression)
+- [Logistic Regression](https://en.wikipedia.org/wiki/Logistic_regression)
+  
 ## Want to Help?
 - <b>Found a bug?</b> Raise an [issue](https://github.com/SKR301/grapy/issues)
 - <b>Got a suggestion?</b> Suggest it [here](https://github.com/SKR301/grapy/issues)
