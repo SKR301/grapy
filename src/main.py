@@ -250,7 +250,8 @@ def saveLogisticRegPoints():
 
 def plotClusterPoints(event):
     for a in range(int(clusterPointsCount.get())):
-        xOffset, yOffset = randomSpread(clusterRadius.get()) * CANVAS_GRAPH_RATIO, randomSpread(clusterRadius.get()) * CANVAS_GRAPH_RATIO
+        xOffset, yOffset = randomSpread(2 * clusterRadius.get()) * CANVAS_GRAPH_RATIO, randomSpread(2 * clusterRadius.get()) * CANVAS_GRAPH_RATIO
+        print(xOffset)
         plotX, plotY = event.x + xOffset, event.y + yOffset
         plotPoint(plotX, plotY, 'blue')
         points.append([plotX, plotY])
@@ -272,7 +273,7 @@ def initGraph():
     for a in range(int(CANVAS_HEIGHT/2), CANVAS_HEIGHT, 50):
         graph.create_line(0, a, CANVAS_WIDTH, a, fill='#cccccc', width=1)
         graph.create_line(0, a-CANVAS_HEIGHT/2, CANVAS_WIDTH, a-CANVAS_HEIGHT/2, fill='#cccccc', width=1)
-
+        
 # MAIN---
     # TOP BAR---
 topBarFrame = Frame(root, bd=5)
@@ -333,9 +334,9 @@ clusterBtn.grid(row=4, column=0)
 clusterFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
 clusterPointsCountLabel = Label(clusterFrame, text='# points')
-clusterPointsCountScale = Scale(clusterFrame, from_=1, to=20, orient=HORIZONTAL, length=200, variable=clusterPointsCount)
+clusterPointsCountScale = Scale(clusterFrame, from_=1, to=30, orient=HORIZONTAL, length=200, variable=clusterPointsCount)
 clusterRadiusLabel = Label(clusterFrame, text='Radius')
-clusterRadiusScale = Scale(clusterFrame, from_=0, to=5, resolution=0.1, orient=HORIZONTAL, length=200, variable=clusterRadius)
+clusterRadiusScale = Scale(clusterFrame, from_=0, to=3, resolution=0.1, orient=HORIZONTAL, length=200, variable=clusterRadius)
 clusterBtnFrame = Frame(clusterFrame, bd=2)
 
     # BOTTOM LABEL---
