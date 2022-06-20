@@ -204,11 +204,11 @@ def plotLinearRegPoints(event):
             currPoint.append([plotX, plotY])
             a += GRAPH_WIDTH/100
           
-def saveLinearRegPoints():
-    global points
-    points = points + currPoint
-    pointCountList.append(100)
-    currPoint.clear()
+# def saveLinearRegPoints():
+#     global points
+#     points = points + currPoint
+#     pointCountList.append(100)
+#     currPoint.clear()
 
 def plotLogisticRegPoints(event):
     clearCurr()
@@ -242,11 +242,11 @@ def plotLogisticRegPoints(event):
             currPoint.append([plotX, plotY])
             a += GRAPH_WIDTH/100
           
-def saveLogisticRegPoints():
-    global points
-    points = points + currPoint
-    pointCountList.append(100)
-    currPoint.clear()
+# def saveLogisticRegPoints():
+#     global points
+#     points = points + currPoint
+#     pointCountList.append(100)
+#     currPoint.clear()
 
 def savePts(pointsCount=0):
     global points
