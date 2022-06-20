@@ -77,9 +77,9 @@ def undoPlotPoint(event):
     for a in range(ptsToUndo):
         x,y = points.pop(-1)
         plotPoint(x, y, 'white')
+
     initGraph()
-    for x,y in points:
-        plotPoint(x, y, 'blue')
+    initPoints()
         
 def plotPoint(x,y,colour):
     graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = colour)
@@ -104,7 +104,7 @@ def hideLinRegOpt():
     linRegSpreadLabel.grid_remove()
     linRegSpreadScale.grid_remove()
     linRegOptBtnFrame.grid_remove()
-    linRegPointPlt.grid_remove()
+    # linRegPointPlt.grid_remove()
     linRegPointSave.grid_remove()
     linRegBtn.config(command=showLinRegOpt)
 
@@ -117,8 +117,8 @@ def showLinRegOpt():
     linRegSpreadLabel.grid(row=2, column=0)
     linRegSpreadScale.grid(row=2, column=1)
     linRegOptBtnFrame.grid(row=3, columnspan=2)
-    linRegPointPlt.grid(row=0, column=0)
-    linRegPointSave.grid(row=0, column=1)
+    # linRegPointPlt.grid(row=0, column=0)
+    linRegPointSave.grid(row=0, column=0)
     linRegBtn.config(command=hideLinRegOpt)
 
 def hideLogRegOpt():
@@ -130,7 +130,7 @@ def hideLogRegOpt():
     logRegSpreadLabel.grid_remove()
     logRegSpreadScale.grid_remove()
     logRegOptBtnFrame.grid_remove()
-    logRegPointPlt.grid_remove()
+    # logRegPointPlt.grid_remove()
     logRegPointSave.grid_remove()
     logRegBtn.config(command=showLogRegOpt)
 
@@ -143,7 +143,7 @@ def showLogRegOpt():
     logRegSpreadLabel.grid(row=2, column=0)
     logRegSpreadScale.grid(row=2, column=1)
     logRegOptBtnFrame.grid(row=3, columnspan=2)
-    logRegPointPlt.grid(row=0, column=0)
+    # logRegPointPlt.grid(row=0, column=0)
     logRegPointSave.grid(row=0, column=1)
     logRegBtn.config(command=hideLogRegOpt)
 
@@ -179,9 +179,9 @@ def clearCurr():
 def randomSpread(spread):
     return (random() * spread) - spread/2
 
-def plotLinearRegPoints():
+def plotLinearRegPoints(event):
     clearCurr()
-    tempLabel.config(text=f'y = {math.tan(linRegSlope.get())}x + {linRegConstant.get()}')
+    tempLabel.config(text=f'y = {round(math.tan(linRegSlope.get()),2)}x + {linRegConstant.get()}')
 
     if linRegSlope.get() > 45 and linRegSlope.get() < 135:
         a = -GRAPH_HEIGHT/2
@@ -204,13 +204,13 @@ def plotLinearRegPoints():
             currPoint.append([plotX, plotY])
             a += GRAPH_WIDTH/100
           
-def saveLinearRegPoints():
-    global points
-    points = points + currPoint
-    pointCountList.append(100)
-    currPoint.clear()
+# def saveLinearRegPoints():
+#     global points
+#     points = points + currPoint
+#     pointCountList.append(100)
+#     currPoint.clear()
 
-def plotLogisticRegPoints():
+def plotLogisticRegPoints(event):
     clearCurr()
     tempLabel.config(text=f'y = 1/(1+e^({logRegSlope.get()}x + {logRegConstant.get()}))')
     
@@ -242,16 +242,24 @@ def plotLogisticRegPoints():
             currPoint.append([plotX, plotY])
             a += GRAPH_WIDTH/100
           
-def saveLogisticRegPoints():
+# def saveLogisticRegPoints():
+#     global points
+#     points = points + currPoint
+#     pointCountList.append(100)
+#     currPoint.clear()
+
+def savePts(pointsCount=0):
     global points
     points = points + currPoint
-    pointCountList.append(100)
+    if pointsCount == 0:
+        pointCountList.append(len(currPoint))
+    else:
+        pointCountList.append(pointsCount)
     currPoint.clear()
 
 def plotClusterPoints(event):
     for a in range(int(clusterPointsCount.get())):
         xOffset, yOffset = randomSpread(2 * clusterRadius.get()) * CANVAS_GRAPH_RATIO, randomSpread(2 * clusterRadius.get()) * CANVAS_GRAPH_RATIO
-        print(xOffset)
         plotX, plotY = event.x + xOffset, event.y + yOffset
         plotPoint(plotX, plotY, 'blue')
         points.append([plotX, plotY])
@@ -302,14 +310,13 @@ linRegBtn.grid(row=0, column=0)
 linRegFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
 linRegSlopeLabel = Label(linRegFrame, text='Elevation')
-linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=linRegSlope)
+linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=linRegSlope, command=plotLinearRegPoints)
 linRegConstantLabel = Label(linRegFrame, text='Y-intercept')
-linRegConstantScale = Scale(linRegFrame, from_=-GRAPH_HEIGHT/2, to=GRAPH_HEIGHT/2, orient=HORIZONTAL, length=200, variable=linRegConstant)
+linRegConstantScale = Scale(linRegFrame, from_=-GRAPH_HEIGHT/2, to=GRAPH_HEIGHT/2, orient=HORIZONTAL, length=200, variable=linRegConstant, command=plotLinearRegPoints)
 linRegSpreadLabel = Label(linRegFrame, text='Spread')
-linRegSpreadScale = Scale(linRegFrame, from_=0, to=5, orient=HORIZONTAL, length=200, variable=linRegSpread)
+linRegSpreadScale = Scale(linRegFrame, from_=0, to=5, orient=HORIZONTAL, length=200, variable=linRegSpread, command=plotLinearRegPoints)
 linRegOptBtnFrame = Frame(linRegFrame, bd=2)
-linRegPointPlt = Button(linRegOptBtnFrame, text='Plot', command=plotLinearRegPoints)
-linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=saveLinearRegPoints)
+linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=lambda: savePts(100))
 
         # LINEAR REGRESSION---
 logRegBtn = Button(menuBarFrame, text='Logistic Reg', width=40, command=showLogRegOpt)
@@ -318,14 +325,13 @@ logRegBtn.grid(row=2, column=0)
 logRegFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
 logRegSlopeLabel = Label(logRegFrame, text='Elevation')
-logRegSlopeScale = Scale(logRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=logRegSlope)
+logRegSlopeScale = Scale(logRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=logRegSlope, command=plotLogisticRegPoints)
 logRegConstantLabel = Label(logRegFrame, text='X-offset')
-logRegConstantScale = Scale(logRegFrame, from_=-GRAPH_WIDTH/2, to=GRAPH_WIDTH/2, orient=HORIZONTAL, length=200, variable=logRegConstant)
+logRegConstantScale = Scale(logRegFrame, from_=-GRAPH_WIDTH/2, to=GRAPH_WIDTH/2, orient=HORIZONTAL, length=200, variable=logRegConstant, command=plotLogisticRegPoints)
 logRegSpreadLabel = Label(logRegFrame, text='Spread')
-logRegSpreadScale = Scale(logRegFrame, from_=0, to=1, resolution=0.1, orient=HORIZONTAL, length=200, variable=logRegSpread)
+logRegSpreadScale = Scale(logRegFrame, from_=0, to=1, resolution=0.1, orient=HORIZONTAL, length=200, variable=logRegSpread, command=plotLogisticRegPoints)
 logRegOptBtnFrame = Frame(logRegFrame, bd=2)
-logRegPointPlt = Button(logRegOptBtnFrame, text='Plot', command=plotLogisticRegPoints)
-logRegPointSave = Button(logRegOptBtnFrame, text='Save', command=saveLogisticRegPoints)
+logRegPointSave = Button(logRegOptBtnFrame, text='Save', command=lambda: savePts(100))
 
         # CLUSTERING---
 clusterBtn = Button(menuBarFrame, text='Cluster', width=40, command=showClusterOpt)
