@@ -77,9 +77,9 @@ def undoPlotPoint(event):
     for a in range(ptsToUndo):
         x,y = points.pop(-1)
         plotPoint(x, y, 'white')
+
     initGraph()
-    for x,y in points:
-        plotPoint(x, y, 'blue')
+    initPoints()
         
 def plotPoint(x,y,colour):
     graph.create_oval(x-3, y-3, x+3, y+3, width = 0, fill = colour)
@@ -248,6 +248,15 @@ def saveLogisticRegPoints():
     pointCountList.append(100)
     currPoint.clear()
 
+def savePts(pointsCount=0):
+    global points
+    points = points + currPoint
+    if pointsCount == 0:
+        pointCountList.append(len(currPoint))
+    else:
+        pointCountList.append(pointsCount)
+    currPoint.clear()
+
 def plotClusterPoints(event):
     for a in range(int(clusterPointsCount.get())):
         xOffset, yOffset = randomSpread(2 * clusterRadius.get()) * CANVAS_GRAPH_RATIO, randomSpread(2 * clusterRadius.get()) * CANVAS_GRAPH_RATIO
@@ -307,8 +316,7 @@ linRegConstantScale = Scale(linRegFrame, from_=-GRAPH_HEIGHT/2, to=GRAPH_HEIGHT/
 linRegSpreadLabel = Label(linRegFrame, text='Spread')
 linRegSpreadScale = Scale(linRegFrame, from_=0, to=5, orient=HORIZONTAL, length=200, variable=linRegSpread, command=plotLinearRegPoints)
 linRegOptBtnFrame = Frame(linRegFrame, bd=2)
-# linRegPointPlt = Button(linRegOptBtnFrame, text='Plot', command=plotLinearRegPoints)
-linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=saveLinearRegPoints)
+linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=lambda: savePts(100))
 
         # LINEAR REGRESSION---
 logRegBtn = Button(menuBarFrame, text='Logistic Reg', width=40, command=showLogRegOpt)
@@ -323,8 +331,7 @@ logRegConstantScale = Scale(logRegFrame, from_=-GRAPH_WIDTH/2, to=GRAPH_WIDTH/2,
 logRegSpreadLabel = Label(logRegFrame, text='Spread')
 logRegSpreadScale = Scale(logRegFrame, from_=0, to=1, resolution=0.1, orient=HORIZONTAL, length=200, variable=logRegSpread, command=plotLogisticRegPoints)
 logRegOptBtnFrame = Frame(logRegFrame, bd=2)
-# logRegPointPlt = Button(logRegOptBtnFrame, text='Plot', command=plotLogisticRegPoints)
-logRegPointSave = Button(logRegOptBtnFrame, text='Save', command=saveLogisticRegPoints)
+logRegPointSave = Button(logRegOptBtnFrame, text='Save', command=lambda: savePts(100))
 
         # CLUSTERING---
 clusterBtn = Button(menuBarFrame, text='Cluster', width=40, command=showClusterOpt)
