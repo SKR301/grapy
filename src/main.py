@@ -282,6 +282,9 @@ def initGraph():
         graph.create_line(0, a, CANVAS_WIDTH, a, fill='#cccccc', width=1)
         graph.create_line(0, a-CANVAS_HEIGHT/2, CANVAS_WIDTH, a-CANVAS_HEIGHT/2, fill='#cccccc', width=1)
         
+def reset():
+    print()
+
 # MAIN---
     # TOP BAR---
 topBarFrame = Frame(root, bd=5)
@@ -349,8 +352,16 @@ clusterBtnFrame = Frame(clusterFrame, bd=2)
 tempLabel = Label(root, text='SKRinternationals 2022')
 tempLabel.grid(row=2, column=0)
 
-    # EXPORT---
-exportBtn = Button(root, text='Export', command=exportPoints, padx=150, bg='#0078d7', fg='white')
-exportBtn.grid(row=2, column=1)
+    # MAIN OPT---
+mainOptFrame = Frame(root, bd=10)
+mainOptFrame.grid(row=2, column=1)
+
+    # CLEAR ALL ---
+clearBtn = Button(mainOptFrame, text='Clear All', command=reset)
+clearBtn.grid(row=0, column=1)
+
+#     # EXPORT---
+exportBtn = Button(mainOptFrame, text='Export', command=exportPoints, bg='#0078d7', fg='white')
+exportBtn.grid(row=0, column=2)
 
 mainloop()
