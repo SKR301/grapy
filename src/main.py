@@ -282,6 +282,12 @@ def initGraph():
         graph.create_line(0, a, CANVAS_WIDTH, a, fill='#cccccc', width=1)
         graph.create_line(0, a-CANVAS_HEIGHT/2, CANVAS_WIDTH, a-CANVAS_HEIGHT/2, fill='#cccccc', width=1)
         
+def reset():
+    for x,y in points:
+        plotPoint(x,y,'white')
+    points.clear()
+    clearCurr()
+
 # MAIN---
     # TOP BAR---
 topBarFrame = Frame(root, bd=5)
@@ -304,8 +310,8 @@ menuBarFrame = Frame(root, bd=5)
 menuBarFrame.grid(row=1, column=1)  
 
         # LINEAR REGRESSION---
-linRegBtn = Button(menuBarFrame, text='Linear Reg', width=40, command=showLinRegOpt)
-linRegBtn.grid(row=0, column=0)
+linRegBtn = Button(menuBarFrame, text='Linear Reg', width=40, command=showLinRegOpt, pady=10)
+linRegBtn.grid(row=0, column=0, pady=1)
 
 linRegFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
@@ -319,8 +325,8 @@ linRegOptBtnFrame = Frame(linRegFrame, bd=2)
 linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=lambda: savePts(100))
 
         # LINEAR REGRESSION---
-logRegBtn = Button(menuBarFrame, text='Logistic Reg', width=40, command=showLogRegOpt)
-logRegBtn.grid(row=2, column=0)
+logRegBtn = Button(menuBarFrame, text='Logistic Reg', width=40, command=showLogRegOpt, pady=10)
+logRegBtn.grid(row=2, column=0, pady=1)
 
 logRegFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
@@ -334,8 +340,8 @@ logRegOptBtnFrame = Frame(logRegFrame, bd=2)
 logRegPointSave = Button(logRegOptBtnFrame, text='Save', command=lambda: savePts(100))
 
         # CLUSTERING---
-clusterBtn = Button(menuBarFrame, text='Cluster', width=40, command=showClusterOpt)
-clusterBtn.grid(row=4, column=0)
+clusterBtn = Button(menuBarFrame, text='Cluster', width=40, command=showClusterOpt, pady=10)
+clusterBtn.grid(row=4, column=0, pady=1)
 
 clusterFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
@@ -349,8 +355,16 @@ clusterBtnFrame = Frame(clusterFrame, bd=2)
 tempLabel = Label(root, text='SKRinternationals 2022')
 tempLabel.grid(row=2, column=0)
 
-    # EXPORT---
-exportBtn = Button(root, text='Export', command=exportPoints, padx=150, bg='#0078d7', fg='white')
-exportBtn.grid(row=2, column=1)
+    # MAIN OPT---
+mainOptFrame = Frame(root, bd=10)
+mainOptFrame.grid(row=2, column=1)
+
+        # CLEAR ALL ---
+clearBtn = Button(mainOptFrame, text='Clear All', command=reset, padx=10, pady=3)
+clearBtn.grid(row=0, column=1)
+
+        # EXPORT---
+exportBtn = Button(mainOptFrame, text='Export', command=exportPoints, padx=10, pady=3, width=30, bg='#0078d7', fg='white')
+exportBtn.grid(row=0, column=2)
 
 mainloop()
