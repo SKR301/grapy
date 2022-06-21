@@ -283,7 +283,10 @@ def initGraph():
         graph.create_line(0, a-CANVAS_HEIGHT/2, CANVAS_WIDTH, a-CANVAS_HEIGHT/2, fill='#cccccc', width=1)
         
 def reset():
-    print()
+    for x,y in points:
+        plotPoint(x,y,'white')
+    points.clear()
+    clearCurr()
 
 # MAIN---
     # TOP BAR---
