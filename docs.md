@@ -7,7 +7,7 @@
       <img src='https://user-images.githubusercontent.com/47807051/174472007-bc8c916b-42a2-449c-bdbe-df8fad8e4ca4.png' width='400'>
     </td>
     <td>
-      <img src='https://user-images.githubusercontent.com/47807051/174472055-1001a931-de98-43c0-b054-421659312526.png'>
+      <img src='https://user-images.githubusercontent.com/47807051/175345967-2327caf6-d050-4af1-94b7-e9abc040ec1d.png'>
     </td>
     <td>
       <img src='https://user-images.githubusercontent.com/47807051/174472065-f60cf13c-83eb-4bd1-b5b6-5ea41f1800c5.png'>
@@ -25,11 +25,14 @@
 2. Click `Export` to extract csv file.
 
 ### Automatic Plots
-![image](https://user-images.githubusercontent.com/47807051/174472998-b8e471f3-5b33-4f4e-a423-fb996ad7a3d1.png)
+![image](https://user-images.githubusercontent.com/47807051/175346058-ffe26385-f267-460e-9149-1f01ae2e0e18.png)
 1. Select the Plot type.
 2. Configure according to your choice.
-3. Click `Plot` to visualize the data before exporting.
-4. Click `Save` to make the date ready to export.
-5. Click `Export` to extract csv file.
+4. Click `Save` to make the data ready to export.
+5. Click `Export` to extract csv file.<br>
+**NOTE**: *Plot won't be extracted if not saved*
 
-*NOTE: Plot won't be extracted if not saved*
+### Undo Points
+1. Press `Ctrl+z` to undo.
+2. Click `Clrear All` to reset graph to initial state.
+
