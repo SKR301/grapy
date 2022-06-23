@@ -8,6 +8,7 @@ Click here for [documentations](https://github.com/SKR301/grapy/blob/main/docs.m
 - [Manual](https://github.com/SKR301/grapy)
 - [Linear Regression](https://en.wikipedia.org/wiki/Linear_regression)
 - [Logistic Regression](https://en.wikipedia.org/wiki/Logistic_regression)
+- [Clustering](https://en.wikipedia.org/wiki/Cluster_analysis)
   
 ## Want to Help?
 - <b>Found a bug?</b> Raise an [issue](https://github.com/SKR301/grapy/issues)
