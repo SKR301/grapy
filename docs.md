@@ -34,5 +34,5 @@
 
 ### Undo Points
 1. Press `Ctrl+z` to undo.
-2. Click `Clrear All` to reset graph to initial state.
+2. Click `Clear All` to reset graph to initial state.
 

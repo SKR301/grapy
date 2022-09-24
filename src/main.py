@@ -372,7 +372,7 @@ exportBtn = Button(mainOptFrame, text='Export', command=exportPoints, padx=10, p
 exportBtn.grid(row=0, column=2)
 
     # BOTTOM LABEL---
-tempLabel = Label(menuBarFrame, text='SKRinternationals 2022')
+tempLabel = Label(menuBarFrame, text='©SKRinternationals 2022')
 tempLabel.grid(row=7, column=0)
 
 mainloop()
