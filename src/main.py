@@ -3,10 +3,14 @@ from random import *
 from os.path import exists
 import csv
 import math
+from sys import platform
 
 root = Tk()
-root.state('zoomed')
 root.title('grapy')
+
+if platform == "win32":
+    root.state('zoomed')
+root.resizable(False, False) 
 
 p1 = PhotoImage(file = "./src/assets/grapy_logo.png")
 root.iconphoto(False, p1)
@@ -309,11 +313,14 @@ graph.bind_all('<Control-z>', undoPlotPoint)
 menuBarFrame = Frame(root, bd=5)
 menuBarFrame.grid(row=1, column=1)  
 
+DataPlotMenu = Frame(menuBarFrame, bd=5)
+DataPlotMenu.grid(row=0, column=0)
+
         # LINEAR REGRESSION---
-linRegBtn = Button(menuBarFrame, text='Linear Reg', width=40, command=showLinRegOpt, pady=10)
+linRegBtn = Button(DataPlotMenu, text='Linear Reg', width=40, command=showLinRegOpt, pady=10)
 linRegBtn.grid(row=0, column=0, pady=1)
 
-linRegFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
+linRegFrame = Frame(DataPlotMenu, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
 linRegSlopeLabel = Label(linRegFrame, text='Elevation')
 linRegSlopeScale = Scale(linRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=linRegSlope, command=plotLinearRegPoints)
@@ -325,10 +332,10 @@ linRegOptBtnFrame = Frame(linRegFrame, bd=2)
 linRegPointSave = Button(linRegOptBtnFrame, text='Save', command=lambda: savePts(100))
 
         # LINEAR REGRESSION---
-logRegBtn = Button(menuBarFrame, text='Logistic Reg', width=40, command=showLogRegOpt, pady=10)
+logRegBtn = Button(DataPlotMenu, text='Logistic Reg', width=40, command=showLogRegOpt, pady=10)
 logRegBtn.grid(row=2, column=0, pady=1)
 
-logRegFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
+logRegFrame = Frame(DataPlotMenu, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
 logRegSlopeLabel = Label(logRegFrame, text='Elevation')
 logRegSlopeScale = Scale(logRegFrame, from_=0, to=180, orient=HORIZONTAL, length=200, variable=logRegSlope, command=plotLogisticRegPoints)
@@ -340,10 +347,10 @@ logRegOptBtnFrame = Frame(logRegFrame, bd=2)
 logRegPointSave = Button(logRegOptBtnFrame, text='Save', command=lambda: savePts(100))
 
         # CLUSTERING---
-clusterBtn = Button(menuBarFrame, text='Cluster', width=40, command=showClusterOpt, pady=10)
+clusterBtn = Button(DataPlotMenu, text='Cluster', width=40, command=showClusterOpt, pady=10)
 clusterBtn.grid(row=4, column=0, pady=1)
 
-clusterFrame = Frame(menuBarFrame, highlightbackground='#aaa', highlightthickness=2, bd=10)
+clusterFrame = Frame(DataPlotMenu, highlightbackground='#aaa', highlightthickness=2, bd=10)
 
 clusterPointsCountLabel = Label(clusterFrame, text='# points')
 clusterPointsCountScale = Scale(clusterFrame, from_=1, to=30, orient=HORIZONTAL, length=200, variable=clusterPointsCount)
@@ -351,13 +358,10 @@ clusterRadiusLabel = Label(clusterFrame, text='Radius')
 clusterRadiusScale = Scale(clusterFrame, from_=0, to=3, resolution=0.1, orient=HORIZONTAL, length=200, variable=clusterRadius)
 clusterBtnFrame = Frame(clusterFrame, bd=2)
 
-    # BOTTOM LABEL---
-tempLabel = Label(root, text='SKRinternationals 2022')
-tempLabel.grid(row=2, column=0)
 
     # MAIN OPT---
-mainOptFrame = Frame(root, bd=10)
-mainOptFrame.grid(row=2, column=1)
+mainOptFrame = Frame(menuBarFrame, bd=10)
+mainOptFrame.grid(row=1, column=0)
 
         # CLEAR ALL ---
 clearBtn = Button(mainOptFrame, text='Clear All', command=reset, padx=10, pady=3)
@@ -366,5 +370,9 @@ clearBtn.grid(row=0, column=1)
         # EXPORT---
 exportBtn = Button(mainOptFrame, text='Export', command=exportPoints, padx=10, pady=3, width=30, bg='#0078d7', fg='white')
 exportBtn.grid(row=0, column=2)
+
+    # BOTTOM LABEL---
+tempLabel = Label(menuBarFrame, text='SKRinternationals 2022')
+tempLabel.grid(row=7, column=0)
 
 mainloop()
