@@ -10,7 +10,8 @@ root.title('grapy')
 
 if platform == "win32":
     root.state('zoomed')
-    
+root.resizable(False, False) 
+
 p1 = PhotoImage(file = "./src/assets/grapy_logo.png")
 root.iconphoto(False, p1)
 
@@ -18,7 +19,7 @@ points = []
 pointCountList = []
 currPoint = []
 DEG_TO_RAD = 0.01745329
-CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000 if platform == "win32" else 900
+CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000
 GRAPH_WIDTH, GRAPH_HEIGHT = 30, 20
 CANVAS_GRAPH_RATIO = 50
 linRegSlope = DoubleVar()
@@ -355,12 +356,12 @@ clusterRadiusScale = Scale(clusterFrame, from_=0, to=3, resolution=0.1, orient=H
 clusterBtnFrame = Frame(clusterFrame, bd=2)
 
     # BOTTOM LABEL---
-tempLabel = Label(root, text='SKRinternationals 2022')
-tempLabel.grid(row=2, column=0)
+tempLabel = Label(menuBarFrame, text='SKRinternationals 2022')
+tempLabel.grid(row=7, column=0)
 
     # MAIN OPT---
-mainOptFrame = Frame(root, bd=10)
-mainOptFrame.grid(row=2, column=1)
+mainOptFrame = Frame(menuBarFrame, bd=10)
+mainOptFrame.grid(row=6, column=0)
 
         # CLEAR ALL ---
 clearBtn = Button(mainOptFrame, text='Clear All', command=reset, padx=10, pady=3)
