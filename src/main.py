@@ -3,11 +3,14 @@ from random import *
 from os.path import exists
 import csv
 import math
+from sys import platform
 
 root = Tk()
-root.state('zoomed')
 root.title('grapy')
 
+if platform == "win32":
+    root.state('zoomed')
+    
 p1 = PhotoImage(file = "./src/assets/grapy_logo.png")
 root.iconphoto(False, p1)
 
@@ -15,7 +18,7 @@ points = []
 pointCountList = []
 currPoint = []
 DEG_TO_RAD = 0.01745329
-CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000
+CANVAS_WIDTH, CANVAS_HEIGHT = 1500, 1000 if platform == "win32" else 900
 GRAPH_WIDTH, GRAPH_HEIGHT = 30, 20
 CANVAS_GRAPH_RATIO = 50
 linRegSlope = DoubleVar()
