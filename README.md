@@ -1,4 +1,4 @@
-# gRAPY [WIP]
+# gRAPY
 An UI based data generation software to eport 2D plotted graph as CSV built in Python.<br>
 Click here for [documentations](https://github.com/SKR301/grapy/blob/main/docs.md)
 
